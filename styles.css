@@ -194,6 +194,16 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
 .secondary-projects { grid-template-columns: repeat(2, 1fr); }
 .project-card { padding: 28px; }
 .project-card p { margin-bottom: 18px; }
+.case-card { display: flex; flex-direction: column; }
+.mini-story {
+  margin: 22px 0 4px;
+  border-top: 1px solid var(--line);
+}
+.mini-story > div {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.mini-story p { margin: 0; }
 .metric-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -208,6 +218,14 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
 .metric-row strong { display: block; font-size: 1.5rem; color: var(--text); }
 .metric-row span { font-size: .78rem; color: var(--muted); }
 .outcome { border-top: 1px solid var(--line); padding-top: 18px; }
+.text-link {
+  display: inline-block;
+  margin-top: 2px;
+  font-weight: 750;
+  color: var(--text);
+  text-decoration: none;
+}
+.text-link:hover { text-decoration: underline; }
 
 .resume-placeholder { padding: 24px; margin-top: 28px; }
 .contact-section { background: var(--dark); color: white; }
