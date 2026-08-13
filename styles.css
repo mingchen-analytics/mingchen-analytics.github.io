@@ -251,6 +251,11 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
   color: var(--text);
   text-decoration: none;
 }
+.text-link span {
+  display: inline-block;
+  margin-left: 2px;
+  transition: transform .18s ease;
+}
 .text-link:hover { text-decoration: underline; }
 
 .resume-section { background: var(--bg); }
@@ -395,6 +400,7 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
     border-color: #cfc7bb;
     box-shadow: 0 18px 44px rgba(33, 36, 41, .10);
   }
+  .text-link:hover span { transform: translateX(4px); }
 }
 
 footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem; }
