@@ -19,6 +19,13 @@ body {
   line-height: 1.65;
 }
 a { color: inherit; }
+a:focus-visible,
+.button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+section[id] { scroll-margin-top: 96px; }
 .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
 .narrow { width: min(760px, 100%); }
 
@@ -362,7 +369,15 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
 
 @media (max-width: 560px) {
   .container { width: min(100% - 28px, 1120px); }
-  nav { display: none; }
+  .nav-wrap { gap: 12px; }
+  nav {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav a { white-space: nowrap; }
   .site-header { position: static; }
   .hero { padding: 58px 0 62px; }
   h1 { font-size: 3.3rem; }
