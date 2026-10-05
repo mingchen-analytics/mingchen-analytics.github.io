@@ -1,2 +1,13 @@
-# mingchen-analytics.github.io
-Professional portfolio of Ming Chen | Business Analytics &amp; Sports Analytics
+# Ming Chen — Analytics Portfolio
+
+Personal portfolio for **Ming Chen**, a Wake Forest MSBA candidate focused on business analytics, sports analytics, and decision support.
+
+## Featured Work
+
+- Playoff Matchup Adjustment Tracker
+- Basketball audience analytics and data storytelling
+- Spotify popularity modeling
+
+## Live Site
+
+https://mingchen-analytics.github.io/
