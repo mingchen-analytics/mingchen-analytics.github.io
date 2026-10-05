@@ -74,6 +74,57 @@
         <p class="section-kicker">SELECTED WORK</p>
         <h2>Projects & Work Evidence</h2>
 
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">SPORTS ANALYTICS · DATA PRODUCT</p>
+              <h3>Playoff Matchup Adjustment Tracker</h3>
+              <p class="project-lead">Game-by-game defensive matchup analysis · Python / Streamlit</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>pandas</span>
+              <span>Plotly</span>
+              <span>Streamlit</span>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Series-level matchup totals can hide when a coaching staff changes defensive assignments. I wanted to make those adjustments visible game by game rather than treating the entire series as one blended sample.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>I built an interactive timeline that converts matchup time into comparable segments, ranks primary and secondary defenders within each game, and lets users highlight individual assignments across the series.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">CASE STUDY</span>
+              <p>Using an OKC–San Antonio playoff series, the dashboard shows Victor Wembanyama's primary matchup shifting from Alex Caruso in Game 1 to Isaiah Hartenstein in Game 2, then splitting almost evenly between Chet Holmgren and Hartenstein in Game 3.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">INTERPRETATION</span>
+              <p>Because single-game matchup efficiency can be noisy, I treat matchup time and matchup share as the primary signals. Shooting and PTS/75 remain supporting context rather than definitive evidence of defender quality.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>1,074</strong><span>Player-matchup rows</span></div>
+            <div><strong>29</strong><span>Offensive players</span></div>
+            <div><strong>5</strong><span>Games in the case study</span></div>
+            <div><strong>3 sec</strong><span>Game 3 gap between Holmgren and Hartenstein matchup time</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Product value:</strong> The tracker turns matchup data into a coaching-oriented view of adjustment timing—helping an analyst see who guarded a player, for how long, and when that responsibility changed during the series.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/" target="_blank" rel="noopener noreferrer">Open Live Dashboard ↗</a>
+            <a class="button secondary" href="https://github.com/mingchen-analytics/playoff-matchup-adjustment-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+          </div>
+        </article>
+
         <div class="project-grid secondary-projects">
           <article class="project-card case-card">
             <p class="project-type">AUDIENCE ANALYTICS · DATA STORYTELLING</p>
@@ -136,7 +187,7 @@
             </div>
 
             <div class="metric-row">
-              <div><strong>89,741</strong><span>Tracks analyzed</span></div>
+              <div><strong>89,740</strong><span>Unique tracks after initial cleaning</span></div>
               <div><strong>~7%</strong><span>Popularity variation explained by the regression model</span></div>
             </div>
 
