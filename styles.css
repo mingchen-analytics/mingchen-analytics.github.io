@@ -106,18 +106,28 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
   box-shadow: 0 12px 40px rgba(33, 36, 41, .06);
 }
 .intro-card { padding: 24px; }
-.video-placeholder {
-  min-height: 270px;
-  margin-top: 14px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #22272e, #3a3f48);
-  color: #fff;
+.quick-facts {
+  margin-top: 16px;
   display: grid;
-  place-items: center;
-  text-align: center;
-  padding: 28px;
+  gap: 0;
 }
-
+.quick-facts > div {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.quick-facts > div:first-child { border-top: 0; }
+.quick-facts strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1rem;
+  color: var(--text);
+}
+.quick-facts span {
+  display: block;
+  font-size: .88rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
 .section { padding: 88px 0; }
 .alt-section { background: #ece8df; }
 .section p { color: var(--muted); }
@@ -320,52 +330,6 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
 }
 .resume-pdf p { padding: 24px; }
 
-.industry-heading { max-width: 800px; }
-.industry-heading > p:last-child { max-width: 760px; }
-.industry-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-  margin-top: 34px;
-}
-.trend-card { padding: 30px; }
-.trend-card h3 { font-size: 1.55rem; margin-top: 8px; }
-.trend-meta {
-  margin: 0 0 8px;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  color: var(--accent-dark) !important;
-}
-.trend-takeaway {
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-.source-link {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: .84rem;
-  font-weight: 750;
-  color: var(--text);
-  text-decoration: none;
-}
-.source-link:hover { text-decoration: underline; }
-.perspective-box {
-  margin-top: 22px;
-  padding: 30px 32px;
-  border-radius: 16px;
-  background: var(--dark);
-  color: #fff;
-}
-.perspective-box h3 {
-  margin: 6px 0 12px;
-  font-size: 1.55rem;
-}
-.perspective-box p { color: #c9ced6; }
-.perspective-box .trend-meta { color: #d6bd91 !important; }
-.perspective-box .source-link { color: #fff; }
-
 .contact-section { background: var(--dark); color: white; }
 .contact-section p { color: #c9ced6; }
 .contact-section .section-kicker { color: #d6bd91; }
@@ -419,7 +383,6 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
   .resume-actions { justify-content: flex-start; }
   .resume-highlights { grid-template-columns: 1fr; }
   .resume-pdf { height: 780px; }
-  .industry-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
@@ -451,7 +414,6 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
   .resume-actions .button { text-align: center; }
   .resume-viewer-top { align-items: flex-start; flex-direction: column; gap: 4px; }
   .resume-pdf { height: 620px; }
-  .trend-card, .perspective-box { padding: 22px; }
   .footer-wrap { flex-direction: column; }
 }
 
