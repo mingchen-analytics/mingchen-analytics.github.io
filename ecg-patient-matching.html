@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ECG patient matching case study by Ming Chen — contrastive representation learning across clinical and Apple Watch ECGs.">
+  <title>ECG Patient Matching | Ming Chen</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html#home">Ming Chen</a>
+      <nav aria-label="Main navigation">
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#resume">Resume</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">MACHINE LEARNING · REPRESENTATION LEARNING</p>
+          <h1 style="font-size: clamp(2.7rem, 6vw, 4.7rem);">ECG Patient Matching</h1>
+          <p class="hero-title">Can a model recognize the same person from two ECG recordings—even when one comes from a clinical ECG and the other from an Apple Watch?</p>
+          <p class="hero-copy">
+            This team research project explores unseen-patient ECG similarity using waveform-only data, patient-level contrastive learning, and controlled CNN/GRU experiments.
+          </p>
+          <div class="button-row">
+            <a class="button primary" href="#case-study">Read Case Study</a>
+            <a class="button secondary" href="index.html#projects">Back to Projects</a>
+          </div>
+        </div>
+
+        <div class="intro-card" aria-label="Project overview">
+          <span class="card-label">PROJECT AT A GLANCE</span>
+          <div class="quick-facts">
+            <div>
+              <strong>2,000+ patients</strong>
+              <span>Large-scale clinical ECG plus paired clinical–Apple Watch data</span>
+            </div>
+            <div>
+              <strong>Unseen-patient matching</strong>
+              <span>Two ECGs in, one continuous similarity score out</span>
+            </div>
+            <div>
+              <strong>Contrastive learning</strong>
+              <span>CNN and GRU representation experiments in PyTorch</span>
+            </div>
+            <div>
+              <strong>AUROC</strong>
+              <span>Primary model-comparison metric with subgroup diagnostics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="case-study" class="section alt-section">
+      <div class="container">
+        <p class="section-kicker">CASE STUDY</p>
+        <h2>Learning identity from changing ECG waveforms</h2>
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">PROBLEM</p>
+              <h3>ECG identity is not a fixed waveform</h3>
+              <p class="project-lead">The model must recognize the same patient across time and recording devices without relying on demographics or patient IDs.</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>PyTorch</span>
+              <span>InfoNCE</span>
+              <span>CNN</span>
+              <span>GRU</span>
+              <span>AUROC</span>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">INPUT</span>
+              <p>Two Lead-I ECG waveforms are processed independently. The task is not disease diagnosis and not fixed patient-ID classification.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">OUTPUT</span>
+              <p>The model produces a continuous similarity score: higher similarity should indicate stronger evidence that both ECGs came from the same person.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">GENERALIZATION</span>
+              <p>Evaluation focuses on patients not seen during training and includes both clinical-to-clinical and clinical-to-Apple Watch matching.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">CORE CHALLENGE</span>
+              <p>The same person's ECG can change with time, heart rate, rhythm, physiology, signal quality, and acquisition conditions while still representing the same identity.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">MY ROLE</p>
+              <h3>Model development, controlled experiments, and failure analysis</h3>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">MODEL DEVELOPMENT</span>
+              <p>I developed and evaluated CNN-based beat representations within the team's existing preprocessing, beat-quality, contrastive-learning, batching, and evaluation framework.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">CONTROLLED COMPARISON</span>
+              <p>I compared CNN and GRU representation strategies while keeping the surrounding training setup as consistent as possible, helping isolate architecture effects from pipeline changes.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">ABLATION DESIGN</span>
+              <p>I helped structure experiments that separated the beat encoder from cross-beat sequence modeling rather than treating each neural architecture as a black box.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">ERROR ANALYSIS</span>
+              <p>I investigated difficult same-patient cases and helped shift the research focus toward longitudinal morphology and physiological-state change.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">APPROACH</p>
+              <h3>Patient-level contrastive representation learning</h3>
+              <p class="project-lead">Instead of predicting a fixed patient label, the models learn an embedding in which recordings from the same patient should be closer than recordings from different patients.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>ECG A</strong><span>Clinical or wearable waveform</span></div>
+            <div><strong>Encoder</strong><span>CNN / GRU representation model</span></div>
+            <div><strong>Embedding</strong><span>Patient-specific learned representation</span></div>
+            <div><strong>Similarity</strong><span>Continuous score evaluated with AUROC</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Experimental principle:</strong> patient-level splitting and controlled comparisons matter as much as architecture. The project explicitly treats leakage checks, subgroup evaluation, and failure diagnosis as part of model development.</p>
+          </div>
+        </article>
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">KEY FINDING</p>
+              <h3>The device difference was not necessarily the hardest problem</h3>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">CROSS-DEVICE</span>
+              <p>CNN-based representations performed especially well in clinical-to-Apple Watch matching, showing that cross-device identity information can remain strong.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">LONGITUDINAL</span>
+              <p>Clinical-to-clinical matching became more difficult for some same-patient recordings separated by longer periods and larger morphology changes.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">RESEARCH SHIFT</span>
+              <p>The central question evolved from “Which architecture wins?” to “How can patient identity remain stable across legitimate within-person ECG changes?”</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">NEXT HYPOTHESIS</span>
+              <p>A promising direction is to expose models to more longitudinal views of the same patient rather than relying on one fixed positive pair per patient.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">WHAT I LEARNED</p>
+              <h3>Better experiments can matter more than a more complicated network</h3>
+            </div>
+          </div>
+          <div class="impact-box">
+            <p>
+              The most valuable workflow became: <strong>build a baseline → run a controlled experiment → inspect failures → form a hypothesis → design the next test.</strong>
+              This project strengthened my understanding of representation learning, experimental design, leakage prevention, reproducibility, and model diagnostics.
+            </p>
+          </div>
+        </article>
+
+        <div class="featured-project" style="margin-bottom: 0;">
+          <p class="project-type">CURRENT STATUS</p>
+          <h3>Competition in progress</h3>
+          <p>
+            This page intentionally presents the research at a high level while the competition is active. The team's implementation repository is private, and formal final-evaluation results and additional public artifacts will be added after the competition is complete.
+          </p>
+          <div class="button-row">
+            <a class="button primary" href="index.html#projects">Back to Projects</a>
+            <a class="button secondary" href="index.html#contact">Contact Me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <span>© 2026 Ming Chen</span>
+      <span>Business Analytics · Sports Analytics</span>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
