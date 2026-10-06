@@ -134,6 +134,58 @@
           </div>
         </article>
 
+
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">MACHINE LEARNING · REPRESENTATION LEARNING</p>
+              <h3>ECG Patient Matching with Contrastive Learning</h3>
+              <p class="project-lead">Unseen-patient similarity across clinical and Apple Watch ECGs · Python / PyTorch</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>PyTorch</span>
+              <span>InfoNCE</span>
+              <span>CNN</span>
+              <span>GRU</span>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Can a model determine whether two ECG recordings belong to the same unseen patient—even when one comes from a clinical ECG and the other from an Apple Watch?</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>Our team uses patient-level contrastive learning to learn ECG embeddings, then compares CNN- and GRU-based representations under controlled training and evaluation settings.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">MY CONTRIBUTION</span>
+              <p>I developed and evaluated CNN-based beat representations, contributed to architecture ablations, and analyzed difficult same-patient cases to understand why models fail.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">RESEARCH FINDING</span>
+              <p>The harder problem was not always the device change. Longitudinal clinical ECGs revealed a deeper challenge: patient identity must remain recognizable even when the same person's morphology changes over time.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>2,000+</strong><span>Patients in active experiments</span></div>
+            <div><strong>2</strong><span>Matching settings: clinical↔clinical and clinical↔wearable</span></div>
+            <div><strong>AUROC</strong><span>Primary evaluation metric</span></div>
+            <div><strong>Waveform</strong><span>Identity matching without demographic features</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Current status:</strong> Team research project with a private implementation repository while the competition is active. Final evaluation results and additional public artifacts will be added after the competition.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="ecg-patient-matching.html">Read Case Study</a>
+          </div>
+        </article>
+
         <div class="project-grid secondary-projects">
           <article class="project-card case-card">
             <p class="project-type">AUDIENCE ANALYTICS · DATA STORYTELLING</p>
