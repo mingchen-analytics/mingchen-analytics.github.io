@@ -4,6 +4,14 @@ const revealTargets = document.querySelectorAll(
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+if (prefersReducedMotion) {
+  document.querySelectorAll('video[autoplay]').forEach((video) => {
+    video.removeAttribute('autoplay');
+    video.pause();
+    video.controls = true;
+  });
+}
+
 if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   revealTargets.forEach((element, index) => {
     element.classList.add('reveal-target');

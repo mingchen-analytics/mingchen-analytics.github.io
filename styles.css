@@ -220,6 +220,21 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
   background: #f3eee5;
 }
 .impact-box p { margin: 0; }
+.project-media { margin: 26px 0 6px; }
+.project-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--dark);
+}
+.project-media figcaption {
+  margin-top: 10px;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
 
 .project-grid {
   display: grid;

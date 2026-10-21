@@ -134,6 +134,62 @@
           </div>
         </article>
 
+        <article class="featured-project">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">COMPUTER VISION · SPORTS DATA ENGINEERING · IN PROGRESS</p>
+              <h3>NBA Court Vision Tracker</h3>
+              <p class="project-lead">Broadcast video → player and ball positions on the court, in meters · Python / OpenCV / ONNX</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>OpenCV</span>
+              <span>ONNX Runtime</span>
+              <span>Camera Calibration</span>
+              <span>Multi-Object Tracking</span>
+            </div>
+          </div>
+
+          <figure class="project-media">
+            <video src="assets/nba-tracker/court-tracking-demo.mp4" poster="assets/nba-tracker/court-tracking-poster.jpg" width="1280" height="364" autoplay muted loop playsinline preload="metadata" aria-label="Broadcast clip with tracked players on the left and the same players on a top-down court on the right"></video>
+            <figcaption>Left: tracked players and court lines projected through the estimated camera. Right: the same players on a top-down court in meters; rings show 2σ uncertainty. Broadcast excerpt (POR at GSW, NBC Sports Bay Area) shown for research demonstration only.</figcaption>
+          </figure>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Player-tracking data drives modern team analysis, but optical tracking systems are installed only in professional arenas and their data is rarely public. Broadcast video exists for almost every game. I wanted to find out how much reliable spatial data can be recovered from the broadcast alone.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>The pipeline detects players and the ball, estimates the broadcast camera's pan, tilt and zoom frame by frame from the painted court lines, tracks each player, and projects every position onto a top-down court in meters with an attached uncertainty.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">KEY DECISION</span>
+              <p>The biggest risk is a confident but wrong camera estimate, which silently moves every player on the court. I built a quality gate that grades each frame and withholds court coordinates when the fit is doubtful. It is tested on real failure cases, not only synthetic ones.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">STATUS &amp; NEXT</span>
+              <p>The system runs end to end on real broadcasts, including a 113-second multi-camera sequence. Keeping one ID per player through crossings is the main open problem. Human-reviewed annotations are in progress so that tracking accuracy can be measured rather than estimated.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>3.3%</strong><span>Wrong camera fits accepted on unseen frames, down from 85%</span></div>
+            <div><strong>99%+</strong><span>Main-camera frames with an accepted camera fit</span></div>
+            <div><strong>113 s</strong><span>Multi-camera broadcast processed end to end</span></div>
+            <div><strong>121</strong><span>Automated tests</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Analytical value:</strong> Every row of the output states whether a position was observed, interpolated or unknown, so later analysis of spacing, matchups or possessions can work within the data's limits instead of guessing them. A companion tool reads the scoreboard to turn a broadcast into a searchable game timeline.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="https://github.com/mingchen-analytics/nbacourt-vision-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+          </div>
+        </article>
+
 
         <article class="featured-project">
   <div class="featured-project-header">
