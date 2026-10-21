@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Ming Chen's NBA Court Vision Tracker case study: recovering court-coordinate player positions from broadcast video, and a calibration quality gate tested on real failures.">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>NBA Court Vision Tracker | Ming Chen</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="nba-project.css">
+</head>
+<body>
+  <header class="site-header"><div class="container nav-wrap">
+    <a class="brand" href="index.html#home">Ming Chen</a>
+    <nav aria-label="Case study navigation">
+      <a href="#challenge">Challenge</a><a href="#failure">The failure</a><a href="#gate">The gate</a><a href="#fixes">Other fixes</a><a href="#status">Status</a>
+    </nav>
+    <a class="nct-back" href="index.html#projects">← All projects</a>
+  </div></header>
+
+  <main>
+    <section class="nct-hero" id="top"><div class="container nct-hero-grid">
+      <div>
+        <p class="nct-kicker">COMPUTER VISION · SPORTS DATA ENGINEERING · IN PROGRESS</p>
+        <h1>NBA Court Vision Tracker</h1>
+        <p class="nct-subtitle">Broadcast video to player and ball positions on the court, in meters</p>
+        <p>Optical player tracking exists only in arenas that install it, and its data is rarely public. Broadcast video exists for nearly every game. This project asks how much trustworthy spatial data can be recovered from the broadcast alone. The pipeline now runs end to end on real NBA footage. This page is about the decision that has mattered most so far: refusing to trust a camera estimate just because it scored well.</p>
+        <div class="nct-actions">
+          <a class="nct-button primary" href="#failure">See the failure that shaped it ↓</a>
+          <a class="nct-button outline" href="https://github.com/mingchen-analytics/nbacourt-vision-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+        </div>
+        <p class="nct-meta">Individual project · Python · OpenCV · ONNX Runtime · October 2026 · CPU only, no GPU</p>
+      </div>
+      <aside class="nct-scorecard" aria-label="Headline result">
+        <div class="nct-score-top"><span>CALIBRATION QUALITY GATE</span><span>MEASURED</span></div>
+        <div class="nct-before-after"><span class="from">85%</span><span class="arrow" aria-hidden="true">→</span><span class="to">3.3%</span></div>
+        <p class="nct-score-caption">of wrong camera solutions accepted on unseen frames (232 of 272 before, 9 of 272 after)</p>
+        <div class="nct-score-pair">
+          <div><strong>17 / 17</strong><span>verified correct poses accepted</span></div>
+          <div><strong>1 / 98</strong><span>correct real poses wrongly rejected</span></div>
+        </div>
+        <p class="nct-footnote">One threshold fix was made after seeing the unseen-frame results, so the 3.3% is partly post-hoc. No tracking accuracy against reviewed ground truth has been measured yet.</p>
+      </aside>
+    </div></section>
+
+    <div class="nct-strip"><div class="container nct-strip-grid">
+      <div><span class="nct-index">INPUT</span><strong>Broadcast video</strong><small>720p · clips of 11–113 s</small></div>
+      <div><span class="nct-index">CAMERA</span><strong>PTZ calibration</strong><small>Landmark clicks + court lines</small></div>
+      <div><span class="nct-index">OUTPUT</span><strong>Court meters + σ</strong><small>Observed / interpolated / unknown</small></div>
+      <div><span class="nct-index">STATUS</span><strong>Ground truth in progress</strong><small>Tracking accuracy not yet measured</small></div>
+    </div></div>
+
+    <section id="challenge" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">01 — THE CHALLENGE</span>
+        <h2>Every game is filmed. <em>Few are tracked.</em></h2>
+        <p>A box around a player is not a court position. The broadcast camera pans and zooms constantly, so turning pixels into meters requires knowing where the camera is pointing in every frame. That camera estimate is the foundation everything else stands on: if it is wrong, every player in the frame is wrong with it.</p>
+      </div>
+      <div class="nct-card nct-video">
+        <video src="assets/nba-tracker/court-tracking-demo.mp4" poster="assets/nba-tracker/court-tracking-poster.jpg" width="1280" height="364" controls muted loop playsinline preload="metadata" aria-label="Broadcast clip with tracked players beside a top-down court"></video>
+        <p class="nct-caption">Real broadcast excerpt, 15 s, camera panning about 28°. Left: tracked players and court lines projected through the estimated camera. Right: the same players on a top-down court in meters; rings show 2σ uncertainty. Portland at Golden State, NBC Sports Bay Area; shown for research demonstration only.</p>
+      </div>
+      <div class="nct-steps">
+        <div class="nct-step"><span class="nct-small-kicker">STEP 01</span><span class="symbol">[ ]</span><h3>Detect</h3><p>RF-DETR finds players; a basketball-specific heatmap model (WASB) finds the ball.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 02</span><span class="symbol">θ, f</span><h3>Calibrate</h3><p>From a few landmark clicks on one frame, the camera's pan, tilt and zoom are followed through the video using camera motion and the painted court lines.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 03</span><span class="symbol">ID</span><h3>Track</h3><p>A multi-object tracker with camera-motion compensation links detections over time.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 04</span><span class="symbol">m ± σ</span><h3>Project</h3><p>Each player's ground point becomes court meters with an uncertainty.</p></div>
+      </div>
+    </div></section>
+
+    <section id="failure" class="nct-section soft"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">02 — THE FAILURE</span>
+        <h2>The dangerous error is <em>a confident one.</em></h2>
+        <p>My first acceptance rule asked one question: do the projected court lines land on lines in the image? When I tested the camera solver on 17 frames it had never been tuned on, it produced 272 wrong solutions, and that rule accepted 85% of them. An automatic re-initialization after camera cuts failed on all three frames it was tried on; the line-scored version drew the court across the stands and still earned a high alignment score.</p>
+      </div>
+
+      <div class="nct-card nct-quiz">
+        <div class="nct-quiz-head">
+          <div><span class="nct-small-kicker">TRY IT · REAL FRAME 2400</span><h3>Is this camera estimate correct?</h3></div>
+          <span class="nct-chip bad">REAL FAILURE, 15 OCT 2026</span>
+        </div>
+        <img src="assets/nba-tracker/gate-wrong_stands_f2400.jpg" width="1000" height="563" alt="A broadcast frame with a court outline drawn in red across the stands and the basket support, not on the floor">
+        <p class="nct-caption">Red lines: the court as projected by the estimated camera.</p>
+        <details class="nct-reveal"><summary>Reveal what the old rule said ↓</summary><div>
+          <p style="margin:0 0 10px"><strong>The old rule accepted it.</strong> 83% of the template's line points matched an edge, above the 55% threshold.</p>
+          <p>A crowd is full of edges: railings, signage, rows of seats. A court drawn over the stands can therefore look like an excellent line fit. The rule was checking the solver with the same kind of evidence the solver had just optimized, so it could not catch the solver's mistakes.</p>
+        </div></details>
+      </div>
+
+      <div class="nct-compare three">
+        <figure class="nct-shot ok"><img src="assets/nba-tracker/gate-correct.jpg" width="1000" height="563" alt="Court lines in green aligned with the real floor markings" loading="lazy">
+          <figcaption><span class="nct-chip ok">ACCEPTED</span><strong>Correct pose · frame 6100</strong>Line inliers 0.89 · floor IoU 0.76</figcaption></figure>
+        <figure class="nct-shot bad"><img src="assets/nba-tracker/gate-wrong_stands.jpg" width="1000" height="563" alt="Court lines in red drawn over the stands above the floor" loading="lazy">
+          <figcaption><span class="nct-chip bad">REJECTED</span><strong>Court on the stands · frame 6100</strong>Line inliers 0.63 · floor IoU 0.30</figcaption></figure>
+        <figure class="nct-shot bad"><img src="assets/nba-tracker/gate-wrong_diverged.jpg" width="1000" height="563" alt="Court lines in red tilted and floating over the logo, not matching the floor" loading="lazy">
+          <figcaption><span class="nct-chip bad">REJECTED</span><strong>Diverged fit · frame 6100</strong>Line inliers 0.37 · floor IoU 0.27</figcaption></figure>
+      </div>
+      <p class="nct-caption">The same frame with three camera estimates. These failures are stored as regression tests (<code>tests/unit/test_calibration_gates.py</code>).</p>
+    </div></section>
+
+    <section id="gate" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">03 — THE GATE</span>
+        <h2>Check the answer with <em>evidence the solver did not use.</em></h2>
+        <p>The new gate grades every frame on three signals. Line alignment must be stronger: at least 70% of the court's line points must land on an image edge. The projected court must agree with where the wooden floor actually is, which is measured from floor color and is independent of the line fit. And the camera must not jump implausibly from the previous frame. Frames that fail keep their image-space tracking but receive no court coordinates, because a missing position is safer than a wrong one.</p>
+      </div>
+
+      <div class="nct-card">
+        <span class="nct-small-kicker">THE SIGNALS FOR THE FOUR POSES SHOWN ABOVE</span>
+        <div class="nct-table-wrap"><table class="nct-signals">
+          <thead><tr><th>Pose</th><th>Line inliers</th><th>Floor IoU</th><th>Court coverage</th><th>Old rule (≥ 0.55)</th><th>New gate</th></tr></thead>
+          <tbody>
+            <tr class="ok"><td>Correct · f6100</td><td class="num">0.887</td><td class="num">0.760</td><td class="num">0.769</td><td class="num">accepts</td><td class="num flag">good</td></tr>
+            <tr class="bad"><td>Court on stands · f6100</td><td class="num">0.633</td><td class="num">0.300</td><td class="num">0.445</td><td class="num">accepts</td><td class="num flag">failed</td></tr>
+            <tr class="bad"><td>Court on stands · f2400</td><td class="num">0.830</td><td class="num">0.251</td><td class="num">0.357</td><td class="num">accepts</td><td class="num flag">failed</td></tr>
+            <tr class="bad"><td>Diverged fit · f6100</td><td class="num">0.374</td><td class="num">0.267</td><td class="num">0.738</td><td class="num">rejects</td><td class="num flag">failed</td></tr>
+          </tbody>
+        </table></div>
+        <p class="nct-caption">Computed by <code>tools/make_gate_figure.py</code> from the regression fixtures.</p>
+      </div>
+
+      <div class="nct-card" style="margin-top:22px">
+        <span class="nct-small-kicker">BEFORE AND AFTER</span>
+        <div class="nct-bars" style="margin-top:16px">
+          <div class="nct-bar-group"><h3>Wrong camera solutions accepted</h3><p>272 naturally occurring wrong solutions on unseen frames · <span class="nct-evidence">MEASURED · PARTLY POST-HOC</span></p>
+            <div class="nct-bar-row"><span>Old rule</span><div class="nct-bar-track"><div class="nct-bar-fill before" style="width:85%"></div></div><span class="nct-bar-val">85%</span></div>
+            <div class="nct-bar-row"><span>New gate</span><div class="nct-bar-track"><div class="nct-bar-fill after" style="width:3.3%"></div></div><span class="nct-bar-val">3.3%</span></div></div>
+          <div class="nct-bar-group"><h3>Deliberately perturbed wrong poses accepted</h3><p>980 poses on clips 1–5 · <span class="nct-evidence">MEASURED</span></p>
+            <div class="nct-bar-row"><span>Old rule</span><div class="nct-bar-track"><div class="nct-bar-fill before" style="width:27.6%"></div></div><span class="nct-bar-val">27.6%</span></div>
+            <div class="nct-bar-row"><span>New gate</span><div class="nct-bar-track"><div class="nct-bar-fill after" style="width:0%"></div></div><span class="nct-bar-val">0%</span></div></div>
+          <div class="nct-bar-group"><h3>The cost: correct poses wrongly rejected</h3><p>98 verified real poses · <span class="nct-evidence">MEASURED</span></p>
+            <div class="nct-bar-row"><span>Old rule</span><div class="nct-bar-track"><div class="nct-bar-fill after" style="width:0%"></div></div><span class="nct-bar-val">0%</span></div>
+            <div class="nct-bar-row"><span>New gate</span><div class="nct-bar-track"><div class="nct-bar-fill before" style="width:1%"></div></div><span class="nct-bar-val">1.0%</span></div></div>
+        </div>
+        <p>Three caveats. The 980 perturbed poses all come from real clips; adding 80 from a synthetic arena, the gate accepts 2 of 1,060 (0.2%), both synthetic. One loophole, a tiny projected court sitting entirely inside the floor, was found and closed after I saw the unseen-frame results, which moved acceptance from 14 to 9 of 272, so the 3.3% is partly post-hoc. And stricter is not free: the gate is over-cautious on fast, blurred pans (about 0.6% of frames on the long video). Raising the line threshold to about 0.76 would remove most of the remaining 9 wrong solutions but would also reject about 5% of the correct frames on one wide-angle clip, so I kept the current balance.</p>
+      </div>
+    </div></section>
+
+    <section id="fixes" class="nct-section soft"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">04 — OTHER FIXES AND DEAD ENDS</span>
+        <h2>The same habit, <em>applied beyond the camera.</em></h2>
+      </div>
+      <div class="nct-fixes">
+        <article class="nct-fix"><span class="nct-small-kicker">BALL IN FLIGHT</span><h3>A rule deleted the ball during shots</h3>
+          <div class="delta"><s>2.39 s</s><b>1.30 s</b><span>longest gap without a ball (long video, main camera)</span></div>
+          <div class="delta"><s>35.7%</s><b>29.2%</b><span>frames missing a ball (same segment)</span></div>
+          <p>A clutter filter discarded ball candidates that projected far from the court. But a ball high in the air always projects far away, so the filter was deleting shots in flight. Removing it added ball frames on four clips and removed none, and all 48 restored frames I sampled showed the real ball.</p>
+          <span class="nct-evidence">MEASURED · VISUAL CHECK 48/48</span></article>
+        <article class="nct-fix"><span class="nct-small-kicker">SPECTATORS AS PLAYERS</span><h3>Front-row fans placed on the court</h3>
+          <div class="delta"><s>22%</s><b>3%</b><span>frames with more than 10 "players"</span></div>
+          <div class="delta"><s>87</s><b>44</b><span>coordinate jumps</span></div>
+          <p>Front-row fans whose feet are hidden behind the courtside crowd were being projected onto the court as players. The fix compares each box's height with the expected height of a standing person at that court position. These are proxy numbers from the same 17-second interval used to set the thresholds, not accuracy.</p>
+          <span class="nct-evidence">PROXY · DIAGNOSTIC INTERVAL</span></article>
+        <article class="nct-fix"><span class="nct-small-kicker">TRIED AND REJECTED</span><h3>Ideas that did not hold up</h3>
+          <div class="delta"><b>3 / 3</b><span>automatic re-initializations failed after a cut</span></div>
+          <div class="delta"><b>0</b><span>safe offline track-stitching links found</span></div>
+          <p>Recovering the camera after a cut still needs one manual keyframe. A height-consistency rule helped on the tuning interval but increased track fragmentation on unseen frames, and a longer lost-track window merged players from different teams. Both were left off. Offline track stitching found no link it could make safely.</p>
+          <span class="nct-evidence">MEASURED · NEGATIVE RESULTS</span></article>
+      </div>
+    </div></section>
+
+    <section id="status" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">05 — WHAT IS AND IS NOT KNOWN</span>
+        <h2>What is solid, <em>and what is not yet.</em></h2>
+      </div>
+      <div class="nct-ledger">
+        <div class="have"><span class="nct-small-kicker">ESTABLISHED</span>
+          <ul>
+            <li>Runs end to end on real broadcasts, including a 113 s multi-camera video with cuts and photographer flashes</li>
+            <li>Calibration gate rates above, against verified reference poses</li>
+            <li>Every output row states whether a position was observed, interpolated or unknown</li>
+            <li>121 automated tests, including regressions built from real failures</li>
+          </ul></div>
+        <div class="lack"><span class="nct-small-kicker">NOT YET MEASURED OR SOLVED</span>
+          <ul>
+            <li>Tracking accuracy (HOTA, IDF1): reviewed ground-truth annotation is in progress</li>
+            <li>Position error in meters</li>
+            <li>Identity over time: about 48 player tracks in 97 s where about 10 would be ideal</li>
+            <li>Possession-boundary precision and recall for the video index</li>
+          </ul></div>
+      </div>
+    </div></section>
+
+    <section class="nct-outro" id="next"><div class="container nct-outro-grid">
+      <div><span class="nct-small-kicker">06 — NEXT</span>
+        <h2>Measure it, then fix identity.</h2>
+        <p>Human-reviewed annotations of three 10-second intervals are in progress, so that tracking can be scored with standard metrics (HOTA, IDF1) instead of proxies. After that, the main open problem is identity: telling teammates apart needs an appearance model (re-identification), not jersey color. A companion video index already maps video time to the game clock, which opens a path to aligning public play-by-play data with the footage.</p></div>
+      <div class="nct-outro-card"><span class="nct-small-kicker">CODE AND DOCUMENTATION</span><h3>Full source and validation log</h3>
+        <p>Architecture, data schema, license register, and every measured number with how to reproduce it are in the repository.</p>
+        <div class="nct-actions"><a class="nct-button primary" href="https://github.com/mingchen-analytics/nbacourt-vision-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a></div></div>
+    </div></section>
+  </main>
+  <footer class="nct-footer"><div class="container"><span>© 2026 Ming Chen · Business Analytics &amp; Sports Analytics</span><a href="index.html#projects">← All projects</a></div></footer>
+</body>
+</html>
