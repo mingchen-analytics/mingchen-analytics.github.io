@@ -6,6 +6,12 @@
   <meta name="description" content="Ming Chen's NBA Analytics Platform case study: a validated play-by-play database for 1996-97 to 2025-26, my own possession logic checked game by game against pbpstats, and why I kept a difference instead of tuning it away.">
   <meta name="theme-color" content="#f6f4ef">
   <title>NBA Analytics Platform | Ming Chen</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NBA Analytics Platform | Ming Chen">
+  <meta property="og:description" content="Every NBA game since 1996-97, possessions checked game by game against pbpstats, and why I kept a difference instead of tuning it away.">
+  <meta property="og:url" content="https://mingchen-analytics.github.io/nba-analytics-platform.html">
+  <meta property="og:image" content="https://mingchen-analytics.github.io/assets/nba-platform/shooting.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="nba-project.css">
@@ -222,7 +228,7 @@
     <section class="nct-outro" id="next"><div class="container nct-outro-grid">
       <div><span class="nct-small-kicker">07 — MY ROLE AND WHAT IS NEXT</span>
         <h2>My rules, reviewed step by step.</h2>
-        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next come on/off and RAPM, and the same IDs will link this database to my Playoff Matchup Tracker and Court Vision Tracker.</p></div>
+        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next come on/off and RAPM. The same IDs will link this database to my Court Vision Tracker, and playoff matchup analysis will be rebuilt on top of it.</p></div>
       <div class="nct-outro-card"><span class="nct-small-kicker">CODE AND DOCUMENTATION</span><h3>Source, rules and validation reports</h3>
         <p>The rules file, the possession specification with worked examples, the decision log and every validation report are in the repository. No raw or third-party data is published.</p>
         <div class="nct-actions"><a class="nct-button primary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a><a class="nct-button outline" href="https://github.com/mingchen-analytics/nba-analytics-platform/blob/main/docs/decisions.md" target="_blank" rel="noopener noreferrer">Decision log ↗</a></div></div>

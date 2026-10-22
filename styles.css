@@ -448,7 +448,7 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
 /* Project index: scannable entry points to each project */
 .project-index {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   margin-top: 8px;
 }
@@ -644,3 +644,49 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
 @media (hover: hover) and (pointer: fine) { .yt-lite:hover img { transform: scale(1.02); } }
 .yt-figure figcaption { margin-top: 9px; font-size: .78rem; line-height: 1.5; color: var(--muted); }
 @media (max-width: 850px) { .video-story { grid-template-columns: 1fr; } }
+
+/* Platform card: season-by-season agreement chart */
+.agree-chart {
+  margin: 26px 0 6px;
+  padding: 20px 22px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.agree-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.agree-head .story-label { margin: 0; }
+.agree-legend { font-size: .74rem; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.agree-legend i { width: 10px; height: 10px; border-radius: 2px; background: #5d6b62; display: inline-block; }
+.agree-legend i.after { background: var(--accent); }
+.agree-legend > span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; margin-right: 10px; }
+.agree-plot { position: relative; height: 150px; margin: 18px 0 26px 36px; }
+.agree-line {
+  position: absolute; left: -36px; right: 0;
+  bottom: calc(var(--y) * 1%);
+  border-top: 1px dashed #cfc8bb;
+  font-size: .66rem; color: var(--muted); line-height: 0;
+}
+.agree-bars {
+  list-style: none; margin: 0; padding: 0;
+  position: absolute; inset: 0;
+  display: grid; grid-template-columns: repeat(25, 1fr); gap: 3px; align-items: end;
+}
+.agree-bars li {
+  position: relative;
+  height: calc(var(--v) * 1%);
+  background: #5d6b62;
+  border-radius: 2px 2px 0 0;
+}
+.agree-bars li.after { background: var(--accent); }
+.agree-bars li span {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: 5px; font-size: .64rem; color: var(--muted); white-space: nowrap;
+}
+.agree-chart figcaption { font-size: .8rem; line-height: 1.5; color: var(--muted); }
+@media (max-width: 560px) {
+  .agree-chart { padding: 16px 14px 14px; }
+  .agree-plot { height: 120px; margin-left: 30px; }
+  .agree-line { left: -30px; }
+  .agree-bars { gap: 2px; }
+  .agree-bars li.minor-label span { display: none; }
+}

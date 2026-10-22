@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ming Chen — Business Analytics and Sports Analytics portfolio.">
+  <meta name="description" content="Ming Chen, Wake Forest MSBA candidate and former head basketball coach: broadcast player tracking, a validated NBA play-by-play database, and ECG patient matching.">
   <title>Ming Chen | Business & Sports Analytics</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ming Chen | Business &amp; Sports Analytics">
+  <meta property="og:description" content="Wake Forest MSBA candidate and former head basketball coach. Broadcast player tracking, a validated NBA play-by-play database, and ECG patient matching.">
+  <meta property="og:url" content="https://mingchen-analytics.github.io/">
+  <meta property="og:image" content="https://mingchen-analytics.github.io/assets/nba-tracker/court-tracking-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -29,7 +35,7 @@
           <h1>Ming Chen</h1>
           <p class="hero-title">Wake Forest MSBA Candidate · Business & Sports Analytics</p>
           <p class="hero-copy">
-            As a head coach, I turned film and possession data into game plans. Now I build the data behind decisions like those: dashboards that show when a playoff defense changes its matchups, and a pipeline that recovers player positions from broadcast video.
+            As a head coach, I turned film and possession data into game plans. Now I build the data behind decisions like those: a pipeline that recovers player positions from broadcast video, and a database of every NBA game since 1996-97 that checks its own numbers game by game.
           </p>
           <div class="button-row">
             <a class="button primary" href="#projects">View My Work</a>
@@ -108,16 +114,6 @@
         <h2>Projects & Work Evidence</h2>
 
         <div class="project-index" role="list" aria-label="Project index">
-          <a role="listitem" href="#project-matchup">
-            <span class="project-index-type">Data product · Live</span>
-            <strong>Playoff Matchup Tracker</strong>
-            <span class="project-index-stat">Interactive Streamlit dashboard</span>
-          </a>
-          <a role="listitem" href="#project-platform">
-            <span class="project-index-type">Data engineering · In progress</span>
-            <strong>NBA Analytics Platform</strong>
-            <span class="project-index-stat"><b>7.3M</b> possessions checked vs pbpstats</span>
-          </a>
           <a role="listitem" href="#project-court-vision">
             <span class="project-index-type">Computer vision · In progress</span>
             <strong>NBA Court Vision Tracker</strong>
@@ -128,115 +124,17 @@
             <strong>ECG Patient Matching</strong>
             <span class="project-index-stat"><b>3rd place</b> · 0.960 AUROC</span>
           </a>
+          <a role="listitem" href="#project-platform">
+            <span class="project-index-type">Data engineering · In progress</span>
+            <strong>NBA Analytics Platform</strong>
+            <span class="project-index-stat"><b>97–99%</b> match with pbpstats, 2000–16</span>
+          </a>
           <a role="listitem" href="#project-media">
             <span class="project-index-type">Audience analytics</span>
             <strong>DrayDrayBear Channel</strong>
             <span class="project-index-stat"><b>200K+</b> subscribers</span>
           </a>
         </div>
-
-        <article class="featured-project" id="project-matchup">
-          <div class="featured-project-header">
-            <div>
-              <p class="project-type">SPORTS ANALYTICS · DATA PRODUCT</p>
-              <h3>Playoff Matchup Adjustment Tracker</h3>
-              <p class="project-lead">Game-by-game defensive matchup analysis · Python / Streamlit</p>
-            </div>
-            <div class="tool-tags" aria-label="Project tools">
-              <span>Python</span>
-              <span>pandas</span>
-              <span>Plotly</span>
-              <span>Streamlit</span>
-            </div>
-          </div>
-
-          <div class="project-story-grid">
-            <div class="story-block">
-              <span class="story-label">PROBLEM</span>
-              <p>Series-level matchup totals can hide when a coaching staff changes defensive assignments. I wanted to make those adjustments visible game by game rather than treating the entire series as one blended sample.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">APPROACH</span>
-              <p>I built an interactive timeline that converts matchup time into comparable segments, ranks primary and secondary defenders within each game, and lets users highlight individual assignments across the series.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">CASE STUDY</span>
-              <p>Using an OKC–San Antonio playoff series, the dashboard shows Victor Wembanyama's primary matchup shifting from Alex Caruso in Game 1 to Isaiah Hartenstein in Game 2, then splitting almost evenly between Chet Holmgren and Hartenstein in Game 3.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">INTERPRETATION</span>
-              <p>Because single-game matchup efficiency can be noisy, I treat matchup time and matchup share as the primary signals. Shooting and PTS/75 remain supporting context rather than definitive evidence of defender quality.</p>
-            </div>
-          </div>
-
-          <div class="featured-metrics">
-            <div><strong>1,074</strong><span>Player-matchup rows</span></div>
-            <div><strong>29</strong><span>Offensive players</span></div>
-            <div><strong>5</strong><span>Games in the case study</span></div>
-            <div><strong>3 sec</strong><span>Game 3 gap between Holmgren and Hartenstein matchup time</span></div>
-          </div>
-
-          <div class="impact-box">
-            <p><strong>Product value:</strong> The tracker turns matchup data into a coaching-oriented view of adjustment timing—helping an analyst see who guarded a player, for how long, and when that responsibility changed during the series.</p>
-          </div>
-
-          <div class="button-row">
-            <a class="button primary" href="https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/" target="_blank" rel="noopener noreferrer">Open Live Dashboard ↗</a>
-            <a class="button secondary" href="https://github.com/mingchen-analytics/playoff-matchup-adjustment-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
-          </div>
-        </article>
-
-        <article class="featured-project" id="project-platform">
-          <div class="featured-project-header">
-            <div>
-              <p class="project-type">SPORTS DATA ENGINEERING · VALIDATION · IN PROGRESS</p>
-              <h3>NBA Analytics Platform</h3>
-              <p class="project-lead">Every NBA game since 1996-97 → my own possessions, checked game by game · Python / DuckDB / SQL</p>
-            </div>
-            <div class="tool-tags" aria-label="Project tools">
-              <span>Python</span>
-              <span>DuckDB</span>
-              <span>SQL</span>
-              <span>Streamlit</span>
-              <span>pytest</span>
-            </div>
-          </div>
-
-          <div class="project-story-grid">
-            <div class="story-block">
-              <span class="story-label">PROBLEM</span>
-              <p>Per-possession metrics such as on/off and RAPM depend on judgment calls that public numbers make silently: when a possession ends, how technical free throws count, who gets credit when a substitution happens between free throws.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">APPROACH</span>
-              <p>I built a play-by-play database for 1996-97 → 2025-26 with two levels of validation, and possession logic driven by a versioned rules file. Possession counts are compared with pbpstats, a public reference, for every team and game.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">KEY DECISION</span>
-              <p>From 2016-17 the share of identical counts fell from about 98% to about 78%. The cause was clock precision: reading time in whole seconds would restore the match, but would misclassify real possessions. I kept the exact time and documented the difference.</p>
-            </div>
-            <div class="story-block">
-              <span class="story-label">STATUS &amp; NEXT</span>
-              <p>All 60 season files are loaded, with stints and possessions built and a read-only Streamlit dashboard on top. Next: on/off ratings, lineups and RAPM.</p>
-            </div>
-          </div>
-
-          <div class="featured-metrics">
-            <div><strong>37,986</strong><span>Games, regular season and playoffs</span></div>
-            <div><strong>7.3M</strong><span>Possessions, each stamped with its rules version</span></div>
-            <div><strong>97–99%</strong><span>Team-games identical to pbpstats, 2000-01 → 2015-16</span></div>
-            <div><strong>264</strong><span>Automated tests run before every commit</span></div>
-          </div>
-
-          <div class="impact-box">
-            <p><strong>Analytical value:</strong> Every difference from the reference is traced to a cause and written down instead of tuned away, so each number can be explained and reproduced. The same player, team and game IDs will connect this database to the Matchup Tracker and the Court Vision Tracker.</p>
-          </div>
-
-          <div class="button-row">
-            <a class="button primary" href="nba-analytics-platform.html">Explore Case Study</a>
-            <a class="button secondary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
-          </div>
-        </article>
 
         <article class="featured-project" id="project-court-vision">
           <div class="featured-project-header">
@@ -295,7 +193,6 @@
           </div>
         </article>
 
-
         <article class="featured-project" id="project-ecg">
   <div class="featured-project-header">
     <div>
@@ -343,6 +240,126 @@
   <div class="impact-box"><p><strong>Why it matters:</strong> Every model was selected on patients it had never seen, and the final system was frozen before a one-time test on 5,000 unseen patients, so the scores reflect generalization rather than memorized individuals.</p></div>
   <div class="button-row"><a class="button primary" href="ecg-patient-matching.html">Explore Research Case Study</a></div>
 </article>
+
+        <article class="featured-project" id="project-platform">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">SPORTS DATA ENGINEERING · VALIDATION · IN PROGRESS</p>
+              <h3>NBA Analytics Platform</h3>
+              <p class="project-lead">Every NBA game since 1996-97 → my own possessions, checked game by game · Python / DuckDB / SQL</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>DuckDB</span>
+              <span>SQL</span>
+              <span>Streamlit</span>
+              <span>pytest</span>
+            </div>
+          </div>
+
+          <figure class="agree-chart" aria-label="Bar chart: share of team-games with possession counts identical to pbpstats. 97 to 99 percent every season from 2000-01 to 2015-16, then 70 to 80 percent from 2016-17 on, when the source clock began recording tenths of a second.">
+            <div class="agree-head">
+              <span class="story-label">IDENTICAL POSSESSION COUNTS VS PBPSTATS · BY SEASON</span>
+              <span class="agree-legend"><span><i></i>Clock in whole seconds</span><span><i class="after"></i>Clock in tenths (from 2016-17)</span></span>
+            </div>
+            <div class="agree-plot">
+              <span class="agree-line" style="--y:100">100%</span>
+              <span class="agree-line" style="--y:75">75%</span>
+              <ol class="agree-bars">
+                <li style="--v:97.18" title="2000-01: 97.2%"><span>'01</span></li><li style="--v:98.02" title="2001-02: 98.0%"></li><li style="--v:98.28" title="2002-03: 98.3%"></li><li style="--v:98.61" title="2003-04: 98.6%"></li><li style="--v:98.54" title="2004-05: 98.5%"></li><li style="--v:98.82" title="2005-06: 98.8%" class="minor-label"><span>'06</span></li><li style="--v:98.82" title="2006-07: 98.8%"></li><li style="--v:99.19" title="2007-08: 99.2%"></li><li style="--v:99.31" title="2008-09: 99.3%"></li><li style="--v:98.94" title="2009-10: 98.9%"></li><li style="--v:98.98" title="2010-11: 99.0%"><span>'11</span></li><li style="--v:99.04" title="2011-12: 99.0%"></li><li style="--v:99.27" title="2012-13: 99.3%"></li><li style="--v:98.46" title="2013-14: 98.5%"></li><li style="--v:98.74" title="2014-15: 98.7%"></li><li style="--v:98.58" title="2015-16: 98.6%" class="minor-label"><span>'16</span></li><li class="after" style="--v:80.28" title="2016-17: 80.3%"><span>'17</span></li><li class="after" style="--v:70.37" title="2017-18: 70.4%"></li><li class="after" style="--v:77.89" title="2018-19: 77.9%"></li><li class="after" style="--v:78.12" title="2019-20: 78.1%"></li><li class="after minor-label" style="--v:77.5" title="2020-21: 77.5%"><span>'21</span></li><li class="after" style="--v:78.41" title="2021-22: 78.4%"></li><li class="after" style="--v:77.8" title="2022-23: 77.8%"></li><li class="after" style="--v:79.15" title="2023-24: 79.2%"></li><li class="after" style="--v:79.67" title="2024-25: 79.7%"><span>'25</span></li>
+              </ol>
+            </div>
+            <figcaption>When the source began recording tenths of a second, about 500 possessions a season that start with 2–3 seconds left stopped matching. Reading whole seconds would restore 98%; I kept the exact time and documented why.</figcaption>
+          </figure>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Per-possession metrics such as on/off and RAPM depend on judgment calls that public numbers make silently: when a possession ends, how technical free throws count, who gets credit when a substitution happens between free throws.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>I built a play-by-play database for 1996-97 → 2025-26 with two levels of validation, and possession logic driven by a versioned rules file. Possession counts are compared with pbpstats, a public reference, for every team and game.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">KEY DECISION</span>
+              <p>From 2016-17 the share of identical counts fell from about 98% to about 78%. The cause was clock precision: reading time in whole seconds would restore the match, but would misclassify real possessions. I kept the exact time and documented the difference.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">STATUS &amp; NEXT</span>
+              <p>All 60 season files are loaded, with stints and possessions built and a read-only Streamlit dashboard on top. Next: on/off ratings, lineups and RAPM.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>37,986</strong><span>Games, regular season and playoffs</span></div>
+            <div><strong>7.3M</strong><span>Possessions, each stamped with its rules version</span></div>
+            <div><strong>97–99%</strong><span>Team-games identical to pbpstats, 2000-01 → 2015-16</span></div>
+            <div><strong>264</strong><span>Automated tests run before every commit</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Analytical value:</strong> Every difference from the reference is traced to a cause and written down instead of tuned away, so each number can be explained and reproduced. The same player, team and game IDs will connect this database to the Court Vision Tracker, and matchup analysis will be rebuilt on top of it.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="nba-analytics-platform.html">Explore Case Study</a>
+            <a class="button secondary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+          </div>
+        </article>
+
+        <!-- Hidden for now: Playoff Matchup Adjustment Tracker. To be folded into the NBA Analytics Platform.
+        <article class="featured-project" id="project-matchup">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">SPORTS ANALYTICS · DATA PRODUCT</p>
+              <h3>Playoff Matchup Adjustment Tracker</h3>
+              <p class="project-lead">Game-by-game defensive matchup analysis · Python / Streamlit</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>pandas</span>
+              <span>Plotly</span>
+              <span>Streamlit</span>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Series-level matchup totals can hide when a coaching staff changes defensive assignments. I wanted to make those adjustments visible game by game rather than treating the entire series as one blended sample.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>I built an interactive timeline that converts matchup time into comparable segments, ranks primary and secondary defenders within each game, and lets users highlight individual assignments across the series.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">CASE STUDY</span>
+              <p>Using an OKC–San Antonio playoff series, the dashboard shows Victor Wembanyama's primary matchup shifting from Alex Caruso in Game 1 to Isaiah Hartenstein in Game 2, then splitting almost evenly between Chet Holmgren and Hartenstein in Game 3.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">INTERPRETATION</span>
+              <p>Because single-game matchup efficiency can be noisy, I treat matchup time and matchup share as the primary signals. Shooting and PTS/75 remain supporting context rather than definitive evidence of defender quality.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>1,074</strong><span>Player-matchup rows</span></div>
+            <div><strong>29</strong><span>Offensive players</span></div>
+            <div><strong>5</strong><span>Games in the case study</span></div>
+            <div><strong>3 sec</strong><span>Game 3 gap between Holmgren and Hartenstein matchup time</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Product value:</strong> The tracker turns matchup data into a coaching-oriented view of adjustment timing—helping an analyst see who guarded a player, for how long, and when that responsibility changed during the series.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/" target="_blank" rel="noopener noreferrer">Open Live Dashboard ↗</a>
+            <a class="button secondary" href="https://github.com/mingchen-analytics/playoff-matchup-adjustment-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+          </div>
+        </article>
+        -->
 
         <div class="more-work-head">
           <p class="section-kicker">MORE WORK</p>
