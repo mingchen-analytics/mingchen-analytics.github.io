@@ -70,3 +70,19 @@ if ('IntersectionObserver' in window && sectionMap.length) {
 
   sectionMap.forEach(({ section }) => navObserver.observe(section));
 }
+
+// Click-to-load YouTube: the page only loads YouTube's player after the viewer presses play.
+document.querySelectorAll('.yt-lite[data-video-id]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    const id = link.dataset.videoId;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&cc_load_policy=1&cc_lang_pref=en&hl=en`;
+    iframe.title = link.getAttribute('aria-label') || 'YouTube video';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.className = 'yt-frame';
+    link.replaceWith(iframe);
+  });
+});
