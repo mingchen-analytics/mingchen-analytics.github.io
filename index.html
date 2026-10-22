@@ -29,7 +29,7 @@
           <h1>Ming Chen</h1>
           <p class="hero-title">Wake Forest MSBA Candidate · Business & Sports Analytics</p>
           <p class="hero-copy">
-            I combine real-world decision-making experience with business analytics to turn data, video, and complex information into clear, actionable insights across sports and business environments.
+            As a head coach, I turned film and possession data into game plans. Now I build the data behind decisions like those: dashboards that show when a playoff defense changes its matchups, and a pipeline that recovers player positions from broadcast video.
           </p>
           <div class="button-row">
             <a class="button primary" href="#projects">View My Work</a>
@@ -46,12 +46,12 @@
               <span>Sports Analytics Concentration · May 2027</span>
             </div>
             <div>
-              <strong>Python · SQL · R · Excel</strong>
-              <span>Analytics, modeling, visualization, and decision support</span>
+              <strong>Python · SQL · R</strong>
+              <span>pandas, PyTorch, OpenCV, Streamlit, Excel</span>
             </div>
             <div>
               <strong>Collegiate Basketball</strong>
-              <span>Former head coach · video and scouting workflows</span>
+              <span>Former head coach · built a six-member analytics team</span>
             </div>
             <div>
               <strong>200K+ Subscribers</strong>
@@ -83,7 +83,30 @@
         <p class="section-kicker">SELECTED WORK</p>
         <h2>Projects & Work Evidence</h2>
 
-        <article class="featured-project">
+        <div class="project-index" role="list" aria-label="Project index">
+          <a role="listitem" href="#project-matchup">
+            <span class="project-index-type">Data product · Live</span>
+            <strong>Playoff Matchup Tracker</strong>
+            <span class="project-index-stat">Interactive Streamlit dashboard</span>
+          </a>
+          <a role="listitem" href="#project-court-vision">
+            <span class="project-index-type">Computer vision · In progress</span>
+            <strong>NBA Court Vision Tracker</strong>
+            <span class="project-index-stat"><b>85% → 3.3%</b> bad camera fits accepted</span>
+          </a>
+          <a role="listitem" href="#project-ecg">
+            <span class="project-index-type">Machine learning · Team</span>
+            <strong>ECG Patient Matching</strong>
+            <span class="project-index-stat"><b>3rd place</b> · 0.960 AUROC</span>
+          </a>
+          <a role="listitem" href="#project-media">
+            <span class="project-index-type">Audience analytics</span>
+            <strong>DrayDrayBear Channel</strong>
+            <span class="project-index-stat"><b>200K+</b> subscribers</span>
+          </a>
+        </div>
+
+        <article class="featured-project" id="project-matchup">
           <div class="featured-project-header">
             <div>
               <p class="project-type">SPORTS ANALYTICS · DATA PRODUCT</p>
@@ -134,7 +157,7 @@
           </div>
         </article>
 
-        <article class="featured-project">
+        <article class="featured-project" id="project-court-vision">
           <div class="featured-project-header">
             <div>
               <p class="project-type">COMPUTER VISION · SPORTS DATA ENGINEERING · IN PROGRESS</p>
@@ -192,7 +215,7 @@
         </article>
 
 
-        <article class="featured-project">
+        <article class="featured-project" id="project-ecg">
   <div class="featured-project-header">
     <div>
       <p class="project-type">MACHINE LEARNING · HEALTHCARE AI · 3RD PLACE / 2026 BUILD-A-THON</p>
@@ -221,85 +244,72 @@
       <p>Identified longitudinal changes in ECG waveform shape as a major challenge in matching recordings from the same patient over time.</p>
     </div>
   </div>
-  <div class="featured-metrics">
-    <div><strong>3rd</strong><span>Team placement · ECG-AI Build-a-Thon</span></div>
-    <div><strong>0.960</strong><span>Official Clinical ↔ Clinical AUROC</span></div>
-    <div><strong>0.930</strong><span>Official Clinical ↔ Watch AUROC</span></div>
-    <div><strong>4</strong><span>Models in the K2 ensemble</span></div>
+  <div class="media-metrics">
+    <figure class="project-photo">
+      <picture>
+        <source srcset="assets/ecg/ecg-buildathon-third-place.avif" type="image/avif">
+        <img src="assets/ecg/ecg-buildathon-third-place.jpg" width="1400" height="1050" loading="lazy" decoding="async" alt="Keith Rawls, an event presenter, Aiden Kranz and Ming Chen holding third-place certificates at the 2026 ECG-AI Build-a-Thon">
+      </picture>
+      <figcaption>Third-place award, October 2026. From left: Keith Rawls, event presenter, Aiden Kranz, Ming Chen.</figcaption>
+    </figure>
+    <div class="featured-metrics">
+      <div><strong>3rd</strong><span>Team placement · ECG-AI Build-a-Thon</span></div>
+      <div><strong>0.960</strong><span>Official Clinical ↔ Clinical AUROC</span></div>
+      <div><strong>0.930</strong><span>Official Clinical ↔ Watch AUROC</span></div>
+      <div><strong>4</strong><span>Models in the K2 ensemble</span></div>
+    </div>
   </div>
-  <div class="impact-box"><p><strong>Outcome:</strong> Earned third place in the 2026 ECG-AI Build-a-Thon, with official AUROC scores of 0.960 (clinical-to-clinical) and 0.930 (clinical-to-Apple Watch).</p></div>
+  <div class="impact-box"><p><strong>Why it matters:</strong> Every model was selected on patients it had never seen, and the final system was frozen before a one-time test on 5,000 unseen patients, so the scores reflect generalization rather than memorized individuals.</p></div>
   <div class="button-row"><a class="button primary" href="ecg-patient-matching.html">Explore Research Case Study</a></div>
 </article>
 
-        <div class="project-grid secondary-projects">
-          <article class="project-card case-card">
-            <p class="project-type">AUDIENCE ANALYTICS · DATA STORYTELLING</p>
-            <h3>Building a Data-Informed Basketball Media Platform</h3>
-            <p class="project-lead">DrayDrayBear · Mandarin-language YouTube Channel</p>
+        <div class="more-work-head">
+          <p class="section-kicker">MORE WORK</p>
+        </div>
 
-            <div class="mini-story">
-              <div>
-                <span class="story-label">CONTEXT</span>
-                <p>I wanted to make advanced basketball strategy and analytics understandable to Mandarin-speaking audiences without relying on technical language or traditional box-score explanations alone.</p>
-              </div>
-              <div>
-                <span class="story-label">MY CONTRIBUTION</span>
-                <p>I developed the content strategy, translated film and performance concepts into accessible narratives, and used YouTube Studio analytics to evaluate how audiences responded to different topics and packaging choices.</p>
-              </div>
-              <div>
-                <span class="story-label">ANALYTICS LOOP</span>
-                <p>I tracked click-through rate, early-view performance, topic performance, and viewer engagement patterns, then used those signals to refine titles, thumbnails, and future content direction.</p>
-              </div>
+        <article class="project-card wide-card" id="project-media">
+          <div class="wide-card-head">
+            <div>
+              <p class="project-type">AUDIENCE ANALYTICS · DATA STORYTELLING</p>
+              <h3>Building a Data-Informed Basketball Media Platform</h3>
+              <p class="project-lead">DrayDrayBear · Mandarin-language YouTube channel</p>
             </div>
-
             <div class="metric-row">
               <div><strong>200K+</strong><span>Subscribers</span></div>
               <div><strong>32.7M+</strong><span>Lifetime views</span></div>
             </div>
+          </div>
+          <div class="wide-story">
+            <div>
+              <span class="story-label">CONTEXT</span>
+              <p>Make advanced basketball strategy and analytics understandable to Mandarin-speaking audiences, without leaning on jargon or box scores alone.</p>
+            </div>
+            <div>
+              <span class="story-label">MY CONTRIBUTION</span>
+              <p>Ran the content strategy and translated film and performance concepts into accessible narratives.</p>
+            </div>
+            <div>
+              <span class="story-label">ANALYTICS LOOP</span>
+              <p>Tracked click-through rate, early-view performance, topic performance and engagement in YouTube Studio, and used those signals to refine titles, thumbnails and what to make next.</p>
+            </div>
+          </div>
+          <a class="text-link" href="https://www.youtube.com/@DrayDrayBear" target="_blank" rel="noopener noreferrer">View YouTube Channel <span aria-hidden="true">→</span></a>
+        </article>
 
-            <p class="outcome"><strong>Outcome:</strong> Scaled the platform by combining audience analytics, iterative content development, and clear data storytelling—demonstrating how analytical insight can shape both communication and user engagement.</p>
-            <a class="text-link" href="https://www.youtube.com/@DrayDrayBear" target="_blank" rel="noopener noreferrer">View YouTube Channel <span aria-hidden="true">→</span></a>
-          </article>
-
-          <article class="project-card case-card">
-            <p class="project-type">BUSINESS ANALYTICS · STATISTICAL MODELING</p>
-            <h3>Exploring What Drives Spotify Track Popularity</h3>
-            <p class="project-lead">Wake Forest MSBA · Team Analytics Project</p>
-
+        <article class="project-card mini-project">
+          <div class="mini-project-main">
+            <p class="project-type">COURSE PROJECT · STATISTICAL MODELING</p>
+            <h3>What Drives Spotify Track Popularity?</h3>
+            <p>Our MSBA team tested whether audio features such as danceability, energy and loudness explain a track's popularity. I handled data cleaning, hypothesis testing, the regression model and its interpretation. The answer was mostly no: even after removing zero-popularity tracks, the model explained only about 7% of the variation, a sign that popularity depends on factors beyond the audio itself.</p>
             <div class="tool-tags" aria-label="Project tools">
-              <span>Excel</span>
-              <span>Descriptive Statistics</span>
-              <span>Hypothesis Testing</span>
-              <span>Regression</span>
+              <span>Excel</span><span>Hypothesis Testing</span><span>Regression</span>
             </div>
-
-            <div class="mini-story">
-              <div>
-                <span class="story-label">QUESTION</span>
-                <p>Using a large Spotify track dataset, our team examined how audio characteristics such as danceability, energy, loudness, and related features were associated with track popularity.</p>
-              </div>
-              <div>
-                <span class="story-label">APPROACH</span>
-                <p>We cleaned and summarized the data, examined distributions and visual patterns, built probability and inference analyses, and then used multiple linear regression to test how well the available audio features explained popularity.</p>
-              </div>
-              <div>
-                <span class="story-label">MY CONTRIBUTION</span>
-                <p>My contribution included Excel-based data cleaning and descriptive analysis, hypothesis testing, regression modeling, and interpretation of the results, with a focus on communicating what the model could—and could not—support.</p>
-              </div>
-              <div>
-                <span class="story-label">KEY INSIGHT</span>
-                <p>After removing tracks with a popularity score of zero, the regression still explained only about 7% of the variation in popularity. Rather than treating the low R² as a failed model, we interpreted it as evidence that audio features alone provide limited predictive power.</p>
-              </div>
-            </div>
-
-            <div class="metric-row">
-              <div><strong>89,740</strong><span>Unique tracks after initial cleaning</span></div>
-              <div><strong>~7%</strong><span>Popularity variation explained by the regression model</span></div>
-            </div>
-
-            <p class="outcome"><strong>Business implication:</strong> The project reinforced the importance of model limitations and variable selection. A stronger popularity model would likely require information beyond the audio characteristics available in this dataset.</p>
-          </article>
-        </div>
+          </div>
+          <div class="metric-row mini-metrics">
+            <div><strong>89,740</strong><span>Tracks after cleaning</span></div>
+            <div><strong>~7%</strong><span>Variation explained (R²)</span></div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -327,8 +337,8 @@
           </div>
           <div>
             <span class="story-label">ANALYTICS</span>
-            <strong>Python · SQL · R · Excel</strong>
-            <p>Statistical analysis, visualization, data cleaning & reporting</p>
+            <strong>Python · SQL · R</strong>
+            <p>Statistics, machine learning, computer vision, dashboards & data validation</p>
           </div>
           <div>
             <span class="story-label">EXPERIENCE</span>
@@ -356,7 +366,7 @@
         <p>For opportunities or project conversations, reach me through LinkedIn or email.</p>
         <div class="contact-links">
           <a href="https://www.linkedin.com/in/mingchen-analytics/?locale=en" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="mailto:chenm26@wfu.edu">Email</a>
+          <a href="mailto:chenm26@wfu.edu">chenm26@wfu.edu</a>
           <a href="https://github.com/mingchen-analytics" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
