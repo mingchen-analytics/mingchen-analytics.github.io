@@ -55,7 +55,7 @@
       <div><span class="nct-index">INPUT</span><strong>37,986 games</strong><small>17.5M events · 6.3M shots · 60 season files</small></div>
       <div><span class="nct-index">RULES</span><strong>One config file</strong><small>Versioned · two rule profiles</small></div>
       <div><span class="nct-index">OUTPUT</span><strong>7.3M possessions</strong><small>1.16M stints · every row stamped with its rules version</small></div>
-      <div><span class="nct-index">NEXT</span><strong>On/off → RAPM</strong><small>Built on the validated possessions</small></div>
+      <div><span class="nct-index">NEXT</span><strong>RAPM</strong><small>On/off, lineups and team efficiency are built</small></div>
     </div></div>
 
     <section id="challenge" class="nct-section"><div class="container">
@@ -161,6 +161,8 @@
         <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Unknown means NULL.</strong> No invented IDs, times or values to fill a gap.</p></div>
         <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Fail loudly.</strong> A row that cannot be mapped stops the load; data is never silently dropped.</p></div>
       </div>
+      <p class="nap-note"><strong>One question I measured instead of guessing.</strong> When a substitution happens between a foul and its free throws, who gets credit? Most substitutions happen in exactly that dead ball: 28% of made free throws follow a substitution that came after their foul. Crediting free throws to the lineup on the floor at the foul (the reference's method) or to the lineup on the floor when the possession ends moves 548,053 points, 7.1% of all points, between lineups, and changes a typical player's on-off by about 1.2 points per 100 possessions (more than 1 point for four in ten players). The choice matters, so it stays an open, documented decision.</p>
+
     </div></section>
 
     <section id="findings" class="nct-section soft"><div class="container">
@@ -171,8 +173,8 @@
       <div class="nct-fixes">
         <article class="nct-fix"><span class="nct-small-kicker">OFFICIAL TRACKING DATA</span><h3>Players running 22 mph</h3>
           <div class="delta"><s>5.08</s><b>22.6</b><span>highest average speed (mph): 2013-14 → 2024-25 vs 2025-26</span></div>
-          <div class="delta"><b>44</b><span>player-seasons flagged, none deleted</span></div>
-          <p>While reviewing my own dashboard I saw a rookie averaging 12 mph. NBA.com's 2025-26 movement numbers for 44 players, concentrated on four teams, are physically impossible (players with 100+ minutes). They are kept, flagged and hidden by default, and a new report now checks tracking measurements every season.</p>
+          <div class="delta"><b>3 games</b><span>explain all 44 flagged player-seasons</span></div>
+          <p>While reviewing my own dashboard I saw a rookie averaging 12 mph. NBA.com's 2025-26 season numbers for 44 players are physically impossible. Its single-game boxes trace every one to three games in which nearly every player "ran" 60 to 338 mph; without those games the same players average 3.9 to 4.8 mph. The rows are flagged, never deleted, and a report now checks tracking measurements every season.</p>
           <span class="nct-evidence">MEASURED · FLAGGED, NOT DELETED</span></article>
         <article class="nct-fix"><span class="nct-small-kicker">BOX SCORES</span><h3>Recounting the official box score</h3>
           <div class="delta"><b>≥ 99.7%</b><span>player-games where my count equals the official one, for every statistic and season</span></div>
@@ -190,7 +192,7 @@
       <div class="nct-section-heading">
         <span class="nct-section-num">05 — DASHBOARD</span>
         <h2>Every number says <em>where it comes from.</em></h2>
-        <p>A read-only Streamlit app sits on top of the database. Each figure is labelled as an official NBA.com value, a count from my own play-by-play, or a model result. It runs locally and is not deployed publicly because of the data sources' terms.</p>
+        <p>A read-only Streamlit app with ten pages sits on top of the database. Besides box scores, shooting and tracking, three pages show numbers counted from my own possessions: team efficiency (with four factors), on/off and lineups. Each figure is labelled as an official NBA.com value, a count from my own play-by-play, or a model result, and every rate has its possession count beside it. It runs locally and is not deployed publicly because of the data sources' terms.</p>
       </div>
       <div class="nap-shots">
         <figure class="nct-shot"><img src="assets/nba-platform/shooting.png" width="1484" height="682" loading="lazy" alt="Shooting page: one player's shot share and accuracy by court zone, with league percentile bars">
@@ -213,14 +215,15 @@
             <li>60 season files (regular season and playoffs, 1996-97 → 2025-26) loaded through two levels of checks</li>
             <li>Stints and possessions for every season, each row stamped with its rules version and profile</li>
             <li>A rebuild from zero reproduced all 11 loaded tables exactly (row counts and content hashes; checked before stints and possessions were added)</li>
-            <li>264 automated tests, run before every commit, including real game sequences for the possession rules</li>
+            <li>On/off, five-man lineup, two-man pair and team efficiency tables on top of the possessions, with checks that every possession and point is credited exactly once; team points equal the official box score for 1,365 of 1,372 team-seasons</li>
+            <li>296 automated tests, run before every commit, including real game sequences for the possession rules</li>
           </ul></div>
         <div class="lack"><span class="nct-small-kicker">OPEN OR NOT YET BUILT</span>
           <ul>
-            <li>On/off ratings and lineup tables, then RAPM (ridge penalty chosen by cross-validation grouped by game)</li>
+            <li>RAPM (ridge penalty chosen by cross-validation grouped by game)</li>
             <li>A <code>custom</code> rule profile with my first documented deviations</li>
-            <li>Who gets credit when a substitution happens between free throws: three options, all kept computable, deliberately undecided</li>
-            <li>2017-18: about half of its 159 possessions with a missing end sit within three events of an event the source added late; the other half is not yet analysed</li>
+            <li>Who gets credit when a substitution happens between free throws: measured, not yet decided (it moves 7.1% of all points between lineups)</li>
+            <li>2017-18: 92 of its 159 possessions with a missing end sit next to an event the source added late; most of the rest are missing or misplaced events, and 14 of the 15 missing rebounds I checked are present in the official play-by-play. Corrections are not written yet</li>
           </ul></div>
       </div>
     </div></section>
@@ -228,7 +231,7 @@
     <section class="nct-outro" id="next"><div class="container nct-outro-grid">
       <div><span class="nct-small-kicker">07 — MY ROLE AND WHAT IS NEXT</span>
         <h2>My rules, reviewed step by step.</h2>
-        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next come on/off and RAPM. The same IDs will link this database to my Court Vision Tracker, and playoff matchup analysis will be rebuilt on top of it.</p></div>
+        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next comes RAPM. The same IDs will link this database to my Court Vision Tracker, and playoff matchup analysis will be rebuilt on top of it.</p></div>
       <div class="nct-outro-card"><span class="nct-small-kicker">CODE AND DOCUMENTATION</span><h3>Source, rules and validation reports</h3>
         <p>The rules file, the possession specification with worked examples, the decision log and every validation report are in the repository. No raw or third-party data is published.</p>
         <div class="nct-actions"><a class="nct-button primary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a><a class="nct-button outline" href="https://github.com/mingchen-analytics/nba-analytics-platform/blob/main/docs/decisions.md" target="_blank" rel="noopener noreferrer">Decision log ↗</a></div></div>
