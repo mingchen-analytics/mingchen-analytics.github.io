@@ -28,11 +28,11 @@
         <div class="ecg-actions"><a class="ecg-button primary" href="#question">Explore the case study ↓</a><a class="ecg-button outline" href="#results">See the results</a></div>
         <p class="ecg-meta">2026 Wake Forest ECG-AI Build-a-Thon · Aiden Kranz · Keith Rawls · Ming Chen · Joshua Ekoja</p>
       </div>
-      <aside class="ecg-scorecard" aria-label="Team-reported competition result">
+      <aside class="ecg-scorecard" aria-label="ECG-AI Build-a-Thon competition result">
         <div class="ecg-score-top"><span>2026 ECG-AI BUILD-A-THON</span><span class="ecg-team-pill">TEAM OUTCOME</span></div>
         <div class="ecg-award"><strong>3rd</strong><span>place<br><small>Build-a-Thon result</small></span></div>
         <div class="ecg-score-pair"><div><strong>0.960</strong><span>Clinical ↔ Clinical<br>AUROC</span></div><div><strong>0.930</strong><span>Clinical ↔ Apple Watch<br>AUROC</span></div></div>
-        <p class="ecg-score-footnote">Final competition subgroup scores and placement reported by the team. The organizer score sheet and pooled overall AUROC have not been supplied.</p>
+        <p class="ecg-score-footnote">Official competition evaluation · Clinical and wearable matching.</p><a class="ecg-award-jump" href="#award-photo">See the award photo ↓</a>
       </aside>
     </div></section>
 
@@ -76,7 +76,7 @@
       </div>
       <details class="ecg-details"><summary>Technical deep dive: what one CNN member does</summary><div>
         <p>One K2 CNN member starts with a 1D convolutional stem, then passes through residual convolution stages (32 → 64 → 128 → 256 channels). Attention pooling summarizes the time dimension; a projection head creates a unit-length 128-dimensional embedding. The Raw GRU member instead reads short waveform patches as a sequence before attention pooling.</p>
-        <p class="ecg-footnote">These are model architecture descriptions rather than released model files, trained weights, or patient ECG records. The complete research figures will be added when publication permissions are confirmed.</p>
+        <p class="ecg-footnote">These are model architecture descriptions rather than released model files, trained weights, or patient ECG records. This page does not publish raw ECG recordings or patient-level data.</p>
       </div></details>
     </div></section>
 
@@ -97,15 +97,21 @@
         <article><span class="ecg-small-kicker">LONGITUDINAL TRAINING</span><h3>More recordings per patient</h3><p>The later CNN training recipe sampled up to four clinical ECG recordings from a patient rather than relying on only two, selecting a same-person pair each epoch. This exposed the model to more within-person variation.</p><div class="ecg-tags"><span>Up to 4 recordings</span><span>Patient-level pairs</span></div></article>
         <article><span class="ecg-small-kicker">AUGMENTATION & ENSEMBLING</span><h3>Variation and complementary models</h3><p>The training recipe also used ±20% time-stretch augmentation. Separately trained CNN members were averaged, then complemented by a Raw GRU in K2. More recordings and time stretch were changed together; their effects cannot be isolated from that particular comparison.</p><div class="ecg-tags"><span>±20% stretch</span><span>3 CNN + 1 GRU</span></div></article>
       </div>
-      <details class="ecg-details"><summary>Why not show every experimental AUROC?</summary><div><p>Different historical experiments used different patients, pair lists and evaluation protocols. Displaying all historical scores on one leaderboard would not be a fair comparison. The development, internal sealed and organizer test sets have distinct roles. Additional aggregate charts are awaiting data-use and team publication review.</p></div></details>
+      <details class="ecg-details"><summary>Why not show every experimental AUROC?</summary><div><p>Different historical experiments used different patients, pair lists and evaluation protocols. Displaying all historical scores on one leaderboard would not be a fair comparison. The development, internal sealed and organizer test sets have distinct roles. The public case study focuses on comparable findings rather than combining different evaluation benchmarks.</p></div></details>
     </div></section>
 
     <section id="results" class="ecg-section"><div class="container">
       <div class="ecg-section-heading"><span class="ecg-section-num">05 — EVALUATION & RESULTS</span><h2>What happens on <em>unseen patients?</em></h2><p>The final contest evaluated both clinical-to-clinical and clinical-to-wearable matching. Our independent internal sealed evaluation, by contrast, concentrated on clinical-to-clinical matching.</p></div>
       <div class="ecg-result-grid">
-        <article class="ecg-result-main"><span class="ecg-small-kicker" style="color:#b7d5c2">FINAL COMPETITION · TEAM-REPORTED</span><h3>Third place</h3><p>2026 Wake Forest ECG-AI Build-a-Thon</p><div class="ecg-score-pair"><div><strong>0.960</strong><span>Clinical ↔ Clinical AUROC</span></div><div><strong>0.930</strong><span>Clinical ↔ Apple Watch AUROC</span></div></div><p class="ecg-score-footnote">These are subgroup metrics, not a pooled overall AUROC. Organizer documentation is pending.</p></article>
+        <article class="ecg-result-main"><span class="ecg-small-kicker" style="color:#b7d5c2">OFFICIAL COMPETITION RESULTS</span><h3>Third place</h3><p>2026 Wake Forest ECG-AI Build-a-Thon</p><div class="ecg-score-pair"><div><strong>0.960</strong><span>Clinical ↔ Clinical AUROC</span></div><div><strong>0.930</strong><span>Clinical ↔ Apple Watch AUROC</span></div></div><p class="ecg-score-footnote">Separate AUROC results for the two challenge settings.</p></article>
         <article class="ecg-result-secondary"><span class="ecg-small-kicker">WHY THE EVALUATION DESIGN MATTERED</span><h3>A patient-disjoint validation sequence</h3><div class="ecg-timeline"><div><b>Train</b><span>Learn from training patients; avoid identity leakage</span></div><div><b>Select</b><span>Compare candidate models on held-out development patients</span></div><div><b>Freeze</b><span>Lock the chosen K2 system before one-time internal testing</span></div><div><b>Final event</b><span>Organizer assesses clinical and wearable matching on separate test data</span></div></div><p class="ecg-footnote">Our internal sealed study tested clinical-to-clinical pairs only. It must not be presented as the official wearable result.</p></article>
       </div>
+      <figure class="ecg-award-photo" id="award-photo">
+        <div class="ecg-award-image">
+          <img src="assets/ecg/ecg-buildathon-third-place.avif" width="800" height="600" loading="lazy" decoding="async" alt="Third-place ECG-AI Build-a-Thon award ceremony with team members and an event representative holding certificates">
+        </div>
+        <figcaption><strong>Third-place recognition · 2026 ECG-AI Build-a-Thon</strong><span>A moment from the team's award presentation at Wake Forest.</span></figcaption>
+      </figure>
       <div class="ecg-reflection"><span class="ecg-small-kicker">POST-COMPETITION REFLECTION</span><h3>Clinical validation was stronger than our wearable validation.</h3><p>We repeatedly examined clinical-to-wearable performance on the available development cohort, but did not run an equally independent final wearable holdout before submission. The official wearable AUROC of 0.930 highlights a cross-device generalization risk that our clinical-only sealed evaluation could not assess. Additional validation might have revealed this earlier; it cannot establish that another model would necessarily have scored higher.</p></div>
     </div></section>
 
@@ -124,8 +130,12 @@
 
     <section class="ecg-outro" id="report"><div class="container ecg-outro-grid">
       <div><span class="ecg-small-kicker">07 — THE NEXT RESEARCH QUESTION</span><h2>Research does not end at the leaderboard.</h2><p>The important next step is independent cross-device validation and better robustness to longitudinal ECG morphology change, not simply adding more model complexity.</p></div>
-      <div class="ecg-outro-card"><span class="ecg-small-kicker">RESEARCH MATERIALS</span><h3>Full technical report</h3><p>The complete internal report and supporting model figures are being reviewed for team and dataset publication clearance. They are not posted publicly yet.</p><a class="ecg-button outline" href="index.html#contact">Contact me about the research →</a></div>
+      <div class="ecg-outro-card"><span class="ecg-small-kicker">RESEARCH MATERIALS</span><h3>Full technical report</h3><p>The complete research record includes additional experiments, ablations and model analysis. Contact me for further shareable details.</p><a class="ecg-button outline" href="index.html#contact">Contact me about the research →</a></div>
     </div></section>
+  <section id="materials" class="ecg-materials" aria-labelledby="materials-heading"><div class="container">
+    <h2 id="materials-heading">About these materials</h2>
+    <p>This case study documents a collaborative research project. Competition results are the team's final challenge scores; internal development and sealed clinical evaluations are identified separately. ECG traces used for the interactive illustration are synthetic. Restricted patient recordings and raw datasets are not published.</p>
+  </div></section>
   </main>
   <footer class="ecg-footer"><div class="container"><span>© 2026 Ming Chen · Business Analytics & Sports Analytics</span><a href="index.html#projects">← All projects</a></div></footer>
 </body>
