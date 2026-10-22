@@ -113,6 +113,11 @@
             <strong>Playoff Matchup Tracker</strong>
             <span class="project-index-stat">Interactive Streamlit dashboard</span>
           </a>
+          <a role="listitem" href="#project-platform">
+            <span class="project-index-type">Data engineering · In progress</span>
+            <strong>NBA Analytics Platform</strong>
+            <span class="project-index-stat"><b>7.3M</b> possessions checked vs pbpstats</span>
+          </a>
           <a role="listitem" href="#project-court-vision">
             <span class="project-index-type">Computer vision · In progress</span>
             <strong>NBA Court Vision Tracker</strong>
@@ -178,6 +183,58 @@
           <div class="button-row">
             <a class="button primary" href="https://playoff-matchup-adjustment-tracker-zdee28tjezgw42ujydet6v.streamlit.app/" target="_blank" rel="noopener noreferrer">Open Live Dashboard ↗</a>
             <a class="button secondary" href="https://github.com/mingchen-analytics/playoff-matchup-adjustment-tracker" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+          </div>
+        </article>
+
+        <article class="featured-project" id="project-platform">
+          <div class="featured-project-header">
+            <div>
+              <p class="project-type">SPORTS DATA ENGINEERING · VALIDATION · IN PROGRESS</p>
+              <h3>NBA Analytics Platform</h3>
+              <p class="project-lead">Every NBA game since 1996-97 → my own possessions, checked game by game · Python / DuckDB / SQL</p>
+            </div>
+            <div class="tool-tags" aria-label="Project tools">
+              <span>Python</span>
+              <span>DuckDB</span>
+              <span>SQL</span>
+              <span>Streamlit</span>
+              <span>pytest</span>
+            </div>
+          </div>
+
+          <div class="project-story-grid">
+            <div class="story-block">
+              <span class="story-label">PROBLEM</span>
+              <p>Per-possession metrics such as on/off and RAPM depend on judgment calls that public numbers make silently: when a possession ends, how technical free throws count, who gets credit when a substitution happens between free throws.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">APPROACH</span>
+              <p>I built a play-by-play database for 1996-97 → 2025-26 with two levels of validation, and possession logic driven by a versioned rules file. Possession counts are compared with pbpstats, a public reference, for every team and game.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">KEY DECISION</span>
+              <p>From 2016-17 the share of identical counts fell from about 98% to about 78%. The cause was clock precision: reading time in whole seconds would restore the match, but would misclassify real possessions. I kept the exact time and documented the difference.</p>
+            </div>
+            <div class="story-block">
+              <span class="story-label">STATUS &amp; NEXT</span>
+              <p>All 60 season files are loaded, with stints and possessions built and a read-only Streamlit dashboard on top. Next: on/off ratings, lineups and RAPM.</p>
+            </div>
+          </div>
+
+          <div class="featured-metrics">
+            <div><strong>37,986</strong><span>Games, regular season and playoffs</span></div>
+            <div><strong>7.3M</strong><span>Possessions, each stamped with its rules version</span></div>
+            <div><strong>97–99%</strong><span>Team-games identical to pbpstats, 2000-01 → 2015-16</span></div>
+            <div><strong>264</strong><span>Automated tests run before every commit</span></div>
+          </div>
+
+          <div class="impact-box">
+            <p><strong>Analytical value:</strong> Every difference from the reference is traced to a cause and written down instead of tuned away, so each number can be explained and reproduced. The same player, team and game IDs will connect this database to the Matchup Tracker and the Court Vision Tracker.</p>
+          </div>
+
+          <div class="button-row">
+            <a class="button primary" href="nba-analytics-platform.html">Explore Case Study</a>
+            <a class="button secondary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
           </div>
         </article>
 

@@ -5,6 +5,7 @@ Personal portfolio for **Ming Chen**, a Wake Forest MSBA candidate focused on bu
 ## Featured Work
 
 - Playoff Matchup Adjustment Tracker
+- NBA Analytics Platform (validated play-by-play database, own possession logic checked against pbpstats; in progress)
 - NBA Court Vision Tracker (broadcast video to court-coordinate tracking; in progress)
 - ECG Patient Matching with Contrastive Learning
 - Basketball audience analytics and data storytelling

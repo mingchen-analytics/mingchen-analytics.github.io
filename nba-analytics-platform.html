@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Ming Chen's NBA Analytics Platform case study: a validated play-by-play database for 1996-97 to 2025-26, my own possession logic checked game by game against pbpstats, and why I kept a difference instead of tuning it away.">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>NBA Analytics Platform | Ming Chen</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="nba-project.css">
+  <link rel="stylesheet" href="nba-platform.css">
+</head>
+<body>
+  <header class="site-header"><div class="container nav-wrap">
+    <a class="brand" href="index.html#home">Ming Chen</a>
+    <nav aria-label="Case study navigation">
+      <a href="#challenge">Challenge</a><a href="#drop">The drop</a><a href="#decision">The decision</a><a href="#findings">Findings</a><a href="#dashboard">Dashboard</a><a href="#status">Status</a>
+    </nav>
+    <a class="nct-back" href="index.html#projects">← All projects</a>
+  </div></header>
+
+  <main>
+    <section class="nct-hero" id="top"><div class="container nct-hero-grid">
+      <div>
+        <p class="nct-kicker">SPORTS DATA ENGINEERING · VALIDATION · IN PROGRESS</p>
+        <h1>NBA Analytics Platform</h1>
+        <p class="nct-subtitle">Raw play-by-play to my own possessions, checked game by game against an independent reference</p>
+        <p>Every per-100-possession number in basketball depends on judgment calls: when a possession ends, what to do with technical free throws, who gets credit when a substitution happens between free throws. I built a database of every NBA game since 1996-97 in which each of those calls is written down, versioned and tested, and then compared my possession counts with <a href="https://github.com/dblackrun/pbpstats" target="_blank" rel="noopener noreferrer">pbpstats</a>, an established public reference, team by team and game by game. This page is about the moment the two stopped agreeing, and why I did not make them agree.</p>
+        <div class="nct-actions">
+          <a class="nct-button primary" href="#drop">See the drop ↓</a>
+          <a class="nct-button outline" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+        </div>
+        <p class="nct-meta">Individual project · Python · DuckDB · SQL · Streamlit · pytest · 1996-97 → 2025-26 · October 2026</p>
+      </div>
+      <aside class="nct-scorecard" aria-label="Headline result">
+        <div class="nct-score-top"><span>POSSESSION COUNTS VS PBPSTATS</span><span>MEASURED</span></div>
+        <div class="nap-score-main">97–99%</div>
+        <p class="nct-score-caption">of team-games with exactly the same possession count, every regular season 2000-01 → 2015-16</p>
+        <div class="nct-score-pair">
+          <div><strong>80.3 → 98.2%</strong><span>2016-17 if I read the clock in whole seconds, as pbpstats appears to. Tested, <em>not applied</em></span></div>
+          <div><strong>60 / 60</strong><span>season files pass the hard check: possession points add up to the final score</span></div>
+        </div>
+        <p class="nct-footnote">No pbpstats reference exists for 1996-97 → 1999-00 or 2025-26; those seasons have internal checks only. One season (2017-18) is a further outlier that is only partly explained so far.</p>
+      </aside>
+    </div></section>
+
+    <div class="nct-strip"><div class="container nct-strip-grid">
+      <div><span class="nct-index">INPUT</span><strong>37,986 games</strong><small>17.5M events · 6.3M shots · 60 season files</small></div>
+      <div><span class="nct-index">RULES</span><strong>One config file</strong><small>Versioned · two rule profiles</small></div>
+      <div><span class="nct-index">OUTPUT</span><strong>7.3M possessions</strong><small>1.16M stints · every row stamped with its rules version</small></div>
+      <div><span class="nct-index">NEXT</span><strong>On/off → RAPM</strong><small>Built on the validated possessions</small></div>
+    </div></div>
+
+    <section id="challenge" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">01 — THE CHALLENGE</span>
+        <h2>Every public metric hides <em>a judgment call.</em></h2>
+        <p>An offensive rebound does not start a new possession. An and-1 free throw belongs to the possession of the basket. A technical free throw belongs to no possession at all. A heave with one second left can distort a lineup's efficiency. Public numbers make these choices silently; here each one is a named rule in a configuration file, with a decision date, worked examples from real games and an automated test. Rules start from a <code>pbpstats_compat</code> profile that copies the reference, so that every later change is a deliberate, documented deviation.</p>
+      </div>
+      <div class="nct-steps">
+        <div class="nct-step"><span class="nct-small-kicker">STEP 01</span><span class="symbol">raw</span><h3>Ingest</h3><p>Raw files are never modified; each one is recorded with its URL, download time and SHA-256. Fixes go in a corrections table.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 02</span><span class="symbol">✓ / !</span><h3>Validate</h3><p>Hard checks stop a season (unknown player, duplicate key, the same player twice in a lineup). Warnings are reported, never silently fixed.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 03</span><span class="symbol">rules</span><h3>Build</h3><p>Stints (the ten players on court) and possessions are built from the rules file, keeping the original event order.</p></div>
+        <div class="nct-step"><span class="nct-small-kicker">STEP 04</span><span class="symbol">Δ</span><h3>Compare</h3><p>Possession counts are compared with pbpstats per team and game. Every gap is investigated and explained.</p></div>
+      </div>
+    </div></section>
+
+    <section id="drop" class="nct-section soft"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">02 — THE DROP</span>
+        <h2>Sixteen seasons of agreement, <em>then a cliff.</em></h2>
+        <p>From 2000-01 to 2015-16 my possession count equals pbpstats' in 97–99% of team-games, and is within one possession in 99.9–100%. From 2016-17 the share of identical counts falls to about 78%, in every season. My code had not changed between those seasons, so something in the data had.</p>
+      </div>
+
+      <div class="nct-card">
+        <span class="nct-small-kicker">TEAM-GAMES WITH IDENTICAL POSSESSION COUNTS · REGULAR SEASON · MEASURED</span>
+        <figure class="nap-chart" aria-label="Column chart: share of team-games with identical possession counts, 97 to 99 percent each season from 2000-01 to 2015-16, then 70 to 80 percent from 2016-17 to 2024-25">
+          <div class="nap-chart-plot">
+            <div class="nap-gridline" style="bottom:100%"><span>100%</span></div>
+            <div class="nap-gridline" style="bottom:75%"><span>75%</span></div>
+            <div class="nap-gridline" style="bottom:50%"><span>50%</span></div>
+            <div class="nap-cols">
+              <div class="nap-col" style="--v:97.18" title="2000-01: 97.2%"><span>'01</span></div>
+              <div class="nap-col" style="--v:98.02" title="2001-02: 98.0%"><span>'02</span></div>
+              <div class="nap-col" style="--v:98.28" title="2002-03: 98.3%"><span>'03</span></div>
+              <div class="nap-col" style="--v:98.61" title="2003-04: 98.6%"><span>'04</span></div>
+              <div class="nap-col" style="--v:98.54" title="2004-05: 98.5%"><span>'05</span></div>
+              <div class="nap-col" style="--v:98.82" title="2005-06: 98.8%"><span>'06</span></div>
+              <div class="nap-col" style="--v:98.82" title="2006-07: 98.8%"><span>'07</span></div>
+              <div class="nap-col" style="--v:99.19" title="2007-08: 99.2%"><span>'08</span></div>
+              <div class="nap-col" style="--v:99.31" title="2008-09: 99.3%"><span>'09</span></div>
+              <div class="nap-col" style="--v:98.94" title="2009-10: 98.9%"><span>'10</span></div>
+              <div class="nap-col" style="--v:98.98" title="2010-11: 99.0%"><span>'11</span></div>
+              <div class="nap-col" style="--v:99.04" title="2011-12: 99.0%"><span>'12</span></div>
+              <div class="nap-col" style="--v:99.27" title="2012-13: 99.3%"><span>'13</span></div>
+              <div class="nap-col" style="--v:98.46" title="2013-14: 98.5%"><span>'14</span></div>
+              <div class="nap-col" style="--v:98.74" title="2014-15: 98.7%"><span>'15</span></div>
+              <div class="nap-col" style="--v:98.58" title="2015-16: 98.6%"><span>'16</span></div>
+              <div class="nap-col after" style="--v:80.28" title="2016-17: 80.3%"><span>'17</span></div>
+              <div class="nap-col after" style="--v:70.37" title="2017-18: 70.4%"><span>'18</span></div>
+              <div class="nap-col after" style="--v:77.89" title="2018-19: 77.9%"><span>'19</span></div>
+              <div class="nap-col after" style="--v:78.12" title="2019-20: 78.1%"><span>'20</span></div>
+              <div class="nap-col after" style="--v:77.50" title="2020-21: 77.5%"><span>'21</span></div>
+              <div class="nap-col after" style="--v:78.41" title="2021-22: 78.4%"><span>'22</span></div>
+              <div class="nap-col after" style="--v:77.80" title="2022-23: 77.8%"><span>'23</span></div>
+              <div class="nap-col after" style="--v:79.15" title="2023-24: 79.2%"><span>'24</span></div>
+              <div class="nap-col after" style="--v:79.67" title="2024-25: 79.7%"><span>'25</span></div>
+            </div>
+          </div>
+          <figcaption class="nap-legend">
+            <span><i class="nap-key"></i>Source clock in whole seconds</span>
+            <span><i class="nap-key after"></i>Source clock in tenths of a second (from 2016-17)</span>
+            <span class="nap-legend-note">Season labelled by its end year. Within one possession: 99.9–100% before, 94.7–98.3% after.</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="nct-card nct-quiz" style="margin-top:22px">
+        <div class="nct-quiz-head">
+          <div><span class="nct-small-kicker">TRY IT · THE RULE BEHIND THE GAP</span><h3>A possession starts with 2.4 seconds left in the quarter and scores 0 points. Is it an end-of-period heave?</h3></div>
+          <span class="nct-chip bad">ABOUT 500–560 PER SEASON</span>
+        </div>
+        <p>The shared rule: a possession that starts with <strong>2 seconds or less</strong> left in the period and scores nothing is flagged as a heave and left out of efficiency, because a desperation shot says little about a lineup.</p>
+        <details class="nct-reveal"><summary>Reveal how each side counts it ↓</summary><div>
+          <p style="margin:0 0 10px"><strong>pbpstats appears to read it as 2 seconds, so it is a heave. I compare the exact time, 2.4 &gt; 2, so it is not.</strong></p>
+          <p>Through 2015-16 every possession in the source starts on a whole second, so the two readings never differ. From 2016-17 the clock carries tenths of a second (21,309 fractional possession starts in 2016-17 alone), and about 500–560 scoreless possessions per regular season start with between 2 and 3 seconds left. That single comparison explains most of the drop.</p>
+        </div></details>
+      </div>
+
+      <p class="nap-note"><strong>My first explanation was wrong.</strong> I initially concluded that pbpstats simply does not count about 515 empty final possessions per season. Comparing whole games side by side showed that pbpstats does have those possessions; my matching method had mislabelled them. I corrected the decision log rather than delete the wrong entry, because the path to an answer is part of the evidence.</p>
+    </div></section>
+
+    <section id="decision" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">03 — THE DECISION</span>
+        <h2>Matching the number was <em>one line away.</em></h2>
+        <p>Comparing whole seconds instead of the exact time restores the agreement almost completely, and changes nothing before 2016-17. I tested it and kept the exact time. A possession that starts with 2.4 seconds left is a real possession with time to run a play; counting it as a heave would make my data match the reference by making it less accurate. The difference is now a named setting (<code>end_of_period.clock_precision: exact</code>), documented with these numbers, so anyone can switch it and reproduce either result.</p>
+      </div>
+      <div class="nct-card">
+        <span class="nct-small-kicker">IDENTICAL TEAM-GAMES UNDER EACH READING OF THE CLOCK · MEASURED</span>
+        <div class="nct-table-wrap"><table class="nct-signals">
+          <thead><tr><th>Season</th><th>Exact time (kept)</th><th>Whole seconds (tested)</th><th>Within one possession (kept)</th></tr></thead>
+          <tbody>
+            <tr><td>2016-17</td><td class="num">80.3%</td><td class="num">98.2%</td><td class="num">98.3%</td></tr>
+            <tr><td>2018-19</td><td class="num">77.9%</td><td class="num">97.9%</td><td class="num">98.0%</td></tr>
+            <tr><td>2022-23</td><td class="num">77.8%</td><td class="num">97.3%</td><td class="num">97.1%</td></tr>
+            <tr><td>2024-25</td><td class="num">79.7%</td><td class="num">98.6%</td><td class="num">97.9%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="nct-caption">Decision recorded on 2026-10-21. Exact-time numbers are from the latest full rebuild; whole-second numbers are from the test run before it, which used an earlier code version. That pbpstats reads whole seconds is an inference from comparing whole games, not something pbpstats documents.</p>
+      </div>
+      <div class="nap-principles">
+        <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Never bend basketball logic to match a reference number.</strong> A mismatch is investigated and reported.</p></div>
+        <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Unknown means NULL.</strong> No invented IDs, times or values to fill a gap.</p></div>
+        <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Fail loudly.</strong> A row that cannot be mapped stops the load; data is never silently dropped.</p></div>
+      </div>
+    </div></section>
+
+    <section id="findings" class="nct-section soft"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">04 — OTHER FINDINGS</span>
+        <h2>The same habit, <em>applied to every source.</em></h2>
+      </div>
+      <div class="nct-fixes">
+        <article class="nct-fix"><span class="nct-small-kicker">OFFICIAL TRACKING DATA</span><h3>Players running 22 mph</h3>
+          <div class="delta"><s>5.08</s><b>22.6</b><span>highest average speed (mph): 2013-14 → 2024-25 vs 2025-26</span></div>
+          <div class="delta"><b>44</b><span>player-seasons flagged, none deleted</span></div>
+          <p>While reviewing my own dashboard I saw a rookie averaging 12 mph. NBA.com's 2025-26 movement numbers for 44 players, concentrated on four teams, are physically impossible (players with 100+ minutes). They are kept, flagged and hidden by default, and a new report now checks tracking measurements every season.</p>
+          <span class="nct-evidence">MEASURED · FLAGGED, NOT DELETED</span></article>
+        <article class="nct-fix"><span class="nct-small-kicker">BOX SCORES</span><h3>Recounting the official box score</h3>
+          <div class="delta"><b>≥ 99.7%</b><span>player-games where my count equals the official one, for every statistic and season</span></div>
+          <p>Counting points, rebounds, steals and fouls from my own events and comparing them with NBA.com exposed two era-specific encodings: which player field carries the steal, and a new technical-foul code in 2023-24.</p>
+          <span class="nct-evidence">MEASURED · ALL SEASONS</span></article>
+        <article class="nct-fix"><span class="nct-small-kicker">SECOND SOURCE</span><h3>Cross-checking a purchased dataset</h3>
+          <div class="delta"><b>2 / 8,883</b><span>games with a different final score</span></div>
+          <div class="delta"><b>641 / 647</b><span>lineup disagreements where box-score minutes side with my primary source</span></div>
+          <p>A purchased dataset is used only for validation. Where the two sources disagree on who was on the floor, official minutes and substitutions decide.</p>
+          <span class="nct-evidence">MEASURED · 7 SEASONS</span></article>
+      </div>
+    </div></section>
+
+    <section id="dashboard" class="nct-section"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">05 — DASHBOARD</span>
+        <h2>Every number says <em>where it comes from.</em></h2>
+        <p>A read-only Streamlit app sits on top of the database. Each figure is labelled as an official NBA.com value, a count from my own play-by-play, or a model result. It runs locally and is not deployed publicly because of the data sources' terms.</p>
+      </div>
+      <div class="nap-shots">
+        <figure class="nct-shot"><img src="assets/nba-platform/shooting.png" width="1484" height="682" loading="lazy" alt="Shooting page: one player's shot share and accuracy by court zone, with league percentile bars">
+          <figcaption><strong>Shooting</strong>Share and accuracy by zone, with league percentiles</figcaption></figure>
+        <figure class="nct-shot"><img src="assets/nba-platform/games.png" width="1568" height="766" loading="lazy" alt="Games page: official box score of the 2025 NBA Finals game between Indiana and Oklahoma City">
+          <figcaption><strong>Games</strong>Official box score of a 2024-25 playoff game</figcaption></figure>
+        <figure class="nct-shot"><img src="assets/nba-platform/tracking_movement.png" width="1538" height="786" loading="lazy" alt="Tracking page: distance and average speed leaderboard for 2024-25">
+          <figcaption><strong>Tracking</strong>Distance and speed, totals / per game / per 36 minutes</figcaption></figure>
+      </div>
+    </div></section>
+
+    <section id="status" class="nct-section soft"><div class="container">
+      <div class="nct-section-heading">
+        <span class="nct-section-num">06 — WHAT IS AND IS NOT DONE</span>
+        <h2>What is solid, <em>and what is still open.</em></h2>
+      </div>
+      <div class="nct-ledger">
+        <div class="have"><span class="nct-small-kicker">ESTABLISHED</span>
+          <ul>
+            <li>60 season files (regular season and playoffs, 1996-97 → 2025-26) loaded through two levels of checks</li>
+            <li>Stints and possessions for every season, each row stamped with its rules version and profile</li>
+            <li>A rebuild from zero reproduced all 11 loaded tables exactly (row counts and content hashes; checked before stints and possessions were added)</li>
+            <li>264 automated tests, run before every commit, including real game sequences for the possession rules</li>
+          </ul></div>
+        <div class="lack"><span class="nct-small-kicker">OPEN OR NOT YET BUILT</span>
+          <ul>
+            <li>On/off ratings and lineup tables, then RAPM (ridge penalty chosen by cross-validation grouped by game)</li>
+            <li>A <code>custom</code> rule profile with my first documented deviations</li>
+            <li>Who gets credit when a substitution happens between free throws: three options, all kept computable, deliberately undecided</li>
+            <li>2017-18: about half of its 159 possessions with a missing end sit within three events of an event the source added late; the other half is not yet analysed</li>
+          </ul></div>
+      </div>
+    </div></section>
+
+    <section class="nct-outro" id="next"><div class="container nct-outro-grid">
+      <div><span class="nct-small-kicker">07 — MY ROLE AND WHAT IS NEXT</span>
+        <h2>My rules, reviewed step by step.</h2>
+        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next come on/off and RAPM, and the same IDs will link this database to my Playoff Matchup Tracker and Court Vision Tracker.</p></div>
+      <div class="nct-outro-card"><span class="nct-small-kicker">CODE AND DOCUMENTATION</span><h3>Source, rules and validation reports</h3>
+        <p>The rules file, the possession specification with worked examples, the decision log and every validation report are in the repository. No raw or third-party data is published.</p>
+        <div class="nct-actions"><a class="nct-button primary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a><a class="nct-button outline" href="https://github.com/mingchen-analytics/nba-analytics-platform/blob/main/docs/decisions.md" target="_blank" rel="noopener noreferrer">Decision log ↗</a></div></div>
+    </div></section>
+  </main>
+  <footer class="nct-footer"><div class="container"><span>© 2026 Ming Chen · Business Analytics &amp; Sports Analytics</span><a href="index.html#projects">← All projects</a></div></footer>
+</body>
+</html>

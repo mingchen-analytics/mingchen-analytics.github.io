@@ -448,7 +448,7 @@ footer { background: #0f1115; color: #aeb4bd; padding: 24px 0; font-size: .85rem
 /* Project index: scannable entry points to each project */
 .project-index {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-top: 8px;
 }

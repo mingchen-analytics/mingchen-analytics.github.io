@@ -1,0 +1,37 @@
+/* NBA Analytics Platform case study. Extends styles.css and nba-project.css; prefix nap- */
+.nap-score-main { font-size: clamp(3.6rem, 8vw, 5.4rem); font-weight: 840; line-height: 1; letter-spacing: -.06em; color: #9fdcb4; margin: 24px 0 8px; }
+.nct-score-pair em { font-style: normal; color: #e8a090; }
+.nct-section-heading code, .nct-ledger code, .nct-hero code { font-size: .88em; }
+
+/* Season column chart (0-100% scale) */
+.nap-chart { margin: 18px 0 0; }
+.nap-chart-plot { position: relative; height: 240px; margin-left: 38px; }
+.nap-gridline { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--nct-line); }
+.nap-gridline span { position: absolute; left: -38px; top: -.6em; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.nap-cols { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 4px; }
+.nap-col { position: relative; flex: 1; height: calc(var(--v) * 1%); background: #6fb58c; border-radius: 3px 3px 0 0; }
+.nap-col.after { background: #d9a79b; }
+.nap-col span { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); font-size: .62rem; color: var(--muted); white-space: nowrap; }
+.nap-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 34px; font-size: .78rem; color: var(--muted); }
+.nap-key { display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: #6fb58c; margin-right: 7px; vertical-align: -1px; }
+.nap-key.after { background: #d9a79b; }
+.nap-legend-note { flex-basis: 100%; }
+
+.nap-note { max-width: 820px; margin: 26px 0 0; padding: 18px 22px; border-left: 4px solid var(--nct-kicker); background: #fff; border-radius: 8px; font-size: .92rem; }
+
+.nap-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+.nap-principles > div { border: 1px solid var(--nct-line); background: #fff; border-radius: 13px; padding: 20px; }
+.nap-principles p { font-size: .88rem; margin: 6px 0 0; }
+
+.nap-shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.nap-shots .nct-shot img { aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+
+@media (max-width: 900px) {
+  .nap-principles, .nap-shots { grid-template-columns: 1fr; }
+  .nap-shots .nct-shot img { aspect-ratio: auto; }
+}
+@media (max-width: 560px) {
+  .nap-chart-plot { height: 190px; }
+  .nap-cols { gap: 2px; }
+  .nap-col:nth-child(even) span { display: none; }
+}
