@@ -47,7 +47,7 @@
           <div><strong>80.3 → 98.2%</strong><span>2016-17 if I read the clock in whole seconds, as pbpstats appears to. Tested, <em>not applied</em></span></div>
           <div><strong>60 / 60</strong><span>season files pass the hard check: possession points add up to the final score</span></div>
         </div>
-        <p class="nct-footnote">No pbpstats reference exists for 1996-97 → 1999-00 or 2025-26; those seasons have internal checks only. One season (2017-18) is a further outlier that is only partly explained so far.</p>
+        <p class="nct-footnote">No pbpstats reference exists for 1996-97 → 1999-00 or 2025-26; those seasons have internal checks only. One season (2017-18) is a further outlier: its source orders events wrongly in places; 15 cases are corrected and checked against the official play-by-play, the rest is open.</p>
       </aside>
     </div></section>
 
@@ -55,7 +55,7 @@
       <div><span class="nct-index">INPUT</span><strong>37,986 games</strong><small>17.5M events · 6.3M shots · 60 season files</small></div>
       <div><span class="nct-index">RULES</span><strong>One config file</strong><small>Versioned · two rule profiles</small></div>
       <div><span class="nct-index">OUTPUT</span><strong>7.3M possessions</strong><small>1.16M stints · every row stamped with its rules version</small></div>
-      <div><span class="nct-index">NEXT</span><strong>RAPM</strong><small>On/off, lineups and team efficiency are built</small></div>
+      <div><span class="nct-index">NEXT</span><strong>Custom rules</strong><small>On/off, lineups, matchups and a RAPM prototype are built</small></div>
     </div></div>
 
     <section id="challenge" class="nct-section"><div class="container">
@@ -104,7 +104,7 @@
               <div class="nap-col" style="--v:98.74" title="2014-15: 98.7%"><span>'15</span></div>
               <div class="nap-col" style="--v:98.58" title="2015-16: 98.6%"><span>'16</span></div>
               <div class="nap-col after" style="--v:80.28" title="2016-17: 80.3%"><span>'17</span></div>
-              <div class="nap-col after" style="--v:70.37" title="2017-18: 70.4%"><span>'18</span></div>
+              <div class="nap-col after" style="--v:70.61" title="2017-18: 70.6%"><span>'18</span></div>
               <div class="nap-col after" style="--v:77.89" title="2018-19: 77.9%"><span>'19</span></div>
               <div class="nap-col after" style="--v:78.12" title="2019-20: 78.1%"><span>'20</span></div>
               <div class="nap-col after" style="--v:77.50" title="2020-21: 77.5%"><span>'21</span></div>
@@ -161,7 +161,7 @@
         <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Unknown means NULL.</strong> No invented IDs, times or values to fill a gap.</p></div>
         <div><span class="nct-small-kicker">PRINCIPLE</span><p><strong>Fail loudly.</strong> A row that cannot be mapped stops the load; data is never silently dropped.</p></div>
       </div>
-      <p class="nap-note"><strong>One question I measured instead of guessing.</strong> When a substitution happens between a foul and its free throws, who gets credit? Most substitutions happen in exactly that dead ball: 28% of made free throws follow a substitution that came after their foul. Crediting free throws to the lineup on the floor at the foul (the reference's method) or to the lineup on the floor when the possession ends moves 548,053 points, 7.1% of all points, between lineups, and changes a typical player's on-off by about 1.2 points per 100 possessions (more than 1 point for four in ten players). The choice matters, so it stays an open, documented decision.</p>
+      <p class="nap-note"><strong>One question I measured instead of guessing.</strong> When a substitution happens between a foul and its free throws, who gets credit? Most substitutions happen in exactly that dead ball: 28% of made free throws follow a substitution that came after their foul. Crediting free throws to the lineup on the floor at the foul (the reference's method) or to the lineup on the floor when the possession ends moves 548,053 points, 7.1% of all points, between lineups, and changes a typical player's on-off by about 1.2 points per 100 possessions (more than 1 point for four in ten players). The choice matters, so I measured it before deciding, and then kept the reference's method for free throws.</p>
 
     </div></section>
 
@@ -192,7 +192,7 @@
       <div class="nct-section-heading">
         <span class="nct-section-num">05 — DASHBOARD</span>
         <h2>Every number says <em>where it comes from.</em></h2>
-        <p>A read-only Streamlit app with ten pages sits on top of the database. Besides box scores, shooting and tracking, three pages show numbers counted from my own possessions: team efficiency (with four factors), on/off and lineups. Each figure is labelled as an official NBA.com value, a count from my own play-by-play, or a model result, and every rate has its possession count beside it. It runs locally and is not deployed publicly because of the data sources' terms.</p>
+        <p>A read-only Streamlit app with twelve pages sits on top of the database. Besides box scores, shooting and tracking, five pages show numbers from my own possessions: team efficiency (with four factors), on/off, lineups, matchups (who guarded a player in a series, game by game) and a RAPM prototype with standard errors. Each figure is labelled as an official NBA.com value, a count from my own play-by-play, or a model result, and every rate has its possession count beside it. It runs locally and is not deployed publicly because of the data sources' terms.</p>
       </div>
       <div class="nap-shots">
         <figure class="nct-shot"><img src="assets/nba-platform/shooting.png" width="1484" height="682" loading="lazy" alt="Shooting page: one player's shot share and accuracy by court zone, with league percentile bars">
@@ -216,14 +216,15 @@
             <li>Stints and possessions for every season, each row stamped with its rules version and profile</li>
             <li>A rebuild from zero reproduced all 11 loaded tables exactly (row counts and content hashes; checked before stints and possessions were added)</li>
             <li>On/off, five-man lineup, two-man pair and team efficiency tables on top of the possessions, with checks that every possession and point is credited exactly once; team points equal the official box score for 1,365 of 1,372 team-seasons</li>
-            <li>296 automated tests, run before every commit, including real game sequences for the possession rules</li>
+            <li>RAPM prototype (ridge regression on possessions, penalty chosen by cross-validation grouped by game, bootstrap standard errors); its split-half reliability is 0.37 for one season and 0.57 for three, so single-season values are mostly noise</li>
+            <li>324 automated tests, run before every commit and on every push, including real game sequences for the possession rules</li>
           </ul></div>
         <div class="lack"><span class="nct-small-kicker">OPEN OR NOT YET BUILT</span>
           <ul>
-            <li>RAPM (ridge penalty chosen by cross-validation grouped by game)</li>
+            <li>RAPM beyond the prototype: more windows, priors, and a decision on how to publish it</li>
             <li>A <code>custom</code> rule profile with my first documented deviations</li>
             <li>Who gets credit when a substitution happens between free throws: measured, not yet decided (it moves 7.1% of all points between lineups)</li>
-            <li>2017-18: 92 of its 159 possessions with a missing end sit next to an event the source added late; most of the rest are missing or misplaced events, and 14 of the 15 missing rebounds I checked are present in the official play-by-play. Corrections are not written yet</li>
+            <li>2017-18: I corrected 15 cases where a rebound was stamped after the event that follows it (checked against the official event numbers; the corrected sequences match pbpstats). 142 possessions with a missing end remain, 92 of them next to events the source added late; ordering rows by the official event numbers is not decided</li>
           </ul></div>
       </div>
     </div></section>
@@ -231,7 +232,7 @@
     <section class="nct-outro" id="next"><div class="container nct-outro-grid">
       <div><span class="nct-small-kicker">07 — MY ROLE AND WHAT IS NEXT</span>
         <h2>My rules, reviewed step by step.</h2>
-        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next comes RAPM. The same IDs will link this database to my Court Vision Tracker, and playoff matchup analysis will be rebuilt on top of it.</p></div>
+        <p>The basketball rules, the validation standards and every trade-off are mine, each recorded with its reasons in a dated decision log. The code was written with Claude (Anthropic) as a pair programmer under written working agreements: it proposed and implemented, I decided each rule and reviewed each step, and nothing was tuned to match a reference. Next come my own rule profile and a decision on how far to take RAPM. The same IDs already join NBA.com's matchup data to this database, and will link it to my Court Vision Tracker.</p></div>
       <div class="nct-outro-card"><span class="nct-small-kicker">CODE AND DOCUMENTATION</span><h3>Source, rules and validation reports</h3>
         <p>The rules file, the possession specification with worked examples, the decision log and every validation report are in the repository. No raw or third-party data is published.</p>
         <div class="nct-actions"><a class="nct-button primary" href="https://github.com/mingchen-analytics/nba-analytics-platform" target="_blank" rel="noopener noreferrer">View GitHub ↗</a><a class="nct-button outline" href="https://github.com/mingchen-analytics/nba-analytics-platform/blob/main/docs/decisions.md" target="_blank" rel="noopener noreferrer">Decision log ↗</a></div></div>
