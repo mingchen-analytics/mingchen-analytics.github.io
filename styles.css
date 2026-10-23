@@ -149,6 +149,25 @@ h3 { font-size: 1.35rem; line-height: 1.25; margin: 8px 0 16px; }
   margin-bottom: 8px;
   max-width: 720px;
 }
+
+/* Project titles navigate to the same case studies as the Explore buttons. */
+.project-title-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: .16em;
+  transition: text-decoration-color .18s ease;
+}
+.project-title-link:hover,
+.project-title-link:focus-visible {
+  text-decoration-color: currentColor;
+}
+.project-title-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
 .project-lead { margin: 0; font-weight: 650; }
 .tool-tags {
   display: flex;
